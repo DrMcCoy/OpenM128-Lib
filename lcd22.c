@@ -489,6 +489,21 @@ void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color) {
 	lcd22_finish_write();
 }
 
+void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color) {
+	uint8_t i;
+	
+	int16_t left, top, right, bottom;
+	if (!lcd22_set_draw_area(x -1 , y - 1, 3, 3, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	for (i = 0; i < 3*3; i++)
+		lcd22_write_data(color);
+
+	lcd22_finish_write();
+}
+
 /* Draw a line using Bresenham's Line Algorithm.
  * See https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm for specifics.
  */

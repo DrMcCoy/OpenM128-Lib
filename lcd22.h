@@ -77,6 +77,8 @@ void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foregroun
 
 /** Draw a dot onto the display. */
 void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color);
+/** Draw a big (3x3 pixels) dot onto the display. */
+void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color);
 /** Draw a line onto the display. */
 void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 /** Draw a circle onto the display. */
