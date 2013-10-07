@@ -507,7 +507,9 @@ void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color) {
 /* Draw a line using Bresenham's Line Algorithm.
  * See https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm for specifics.
  */
-void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
+static void lcd22_draw_line_internal(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color,
+                                     void (*plot)(int16_t, int16_t,uint16_t)) {
+
 	const int16_t dx = ABS(x1 - x0);
 	const int16_t dy = ABS(y1 - y0);
 
@@ -519,7 +521,7 @@ void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t co
 	while (1) {
 		int16_t e2 = 2 * err;
 
-		lcd22_draw_dot(x0, y0, color);
+		(*plot)(x0, y0, color);
 		if ((x0 == x1) && (y0 == y1))
 			break;
 
@@ -529,7 +531,7 @@ void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t co
 		}
 
 		if ((x0 == x1) && (y0 == y1)) {
-			lcd22_draw_dot(x0, y0, color);
+			(*plot)(x0, y0, color);
 			break;
 		}
 
@@ -540,20 +542,30 @@ void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t co
 	}
 }
 
+void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
+	lcd22_draw_line_internal(x0, y0, x1, y1, color, &lcd22_draw_dot);
+}
+
+void lcd22_draw_thick_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
+	lcd22_draw_line_internal(x0, y0, x1, y1, color, &lcd22_draw_big_dot);
+}
+
 /* Draw a circle using the Midpoint Circle Algorithm.
  * See https://en.wikipedia.org/wiki/Midpoint_circle_algorithm for specifics.
  */
-void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
+static void lcd22_draw_circle_internal(int16_t x0, int16_t y0, int16_t radius, uint16_t color,
+                                       void (*plot)(int16_t, int16_t,uint16_t)) {
+
 	int16_t f = 1 - radius;
 	int16_t ddFx = 0;
 	int16_t ddFy = -2 * radius;
 	int16_t x = 0;
 	int16_t y = radius;
 
-	lcd22_draw_dot(x0, y0 + radius, color);
-	lcd22_draw_dot(x0, y0 - radius, color);
-	lcd22_draw_dot(x0 + radius, y0, color);
-	lcd22_draw_dot(x0 - radius, y0, color);
+	(*plot)(x0, y0 + radius, color);
+	(*plot)(x0, y0 - radius, color);
+	(*plot)(x0 + radius, y0, color);
+	(*plot)(x0 - radius, y0, color);
 
 	while (x < y) {
 		if (f >= 0) {
@@ -565,13 +577,21 @@ void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
 		ddFx += 2;
 		f += ddFx + 1;
 
-		lcd22_draw_dot(x0 + x, y0 + y, color);
-		lcd22_draw_dot(x0 - x, y0 + y, color);
-		lcd22_draw_dot(x0 + x, y0 - y, color);
-		lcd22_draw_dot(x0 - x, y0 - y, color);
-		lcd22_draw_dot(x0 + y, y0 + x, color);
-		lcd22_draw_dot(x0 - y, y0 + x, color);
-		lcd22_draw_dot(x0 + y, y0 - x, color);
-		lcd22_draw_dot(x0 - y, y0 - x, color);
+		(*plot)(x0 + x, y0 + y, color);
+		(*plot)(x0 - x, y0 + y, color);
+		(*plot)(x0 + x, y0 - y, color);
+		(*plot)(x0 - x, y0 - y, color);
+		(*plot)(x0 + y, y0 + x, color);
+		(*plot)(x0 - y, y0 + x, color);
+		(*plot)(x0 + y, y0 - x, color);
+		(*plot)(x0 - y, y0 - x, color);
 	}
+}
+
+void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
+	lcd22_draw_circle_internal(x0, y0, radius, color, &lcd22_draw_dot);
+}
+
+void lcd22_draw_thick_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
+	lcd22_draw_circle_internal(x0, y0, radius, color, &lcd22_draw_big_dot);
 }

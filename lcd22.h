@@ -81,7 +81,11 @@ void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color);
 void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color);
 /** Draw a line onto the display. */
 void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+/** Draw a thick (3 pixels) line onto the display. */
+void lcd22_draw_thick_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 /** Draw a circle onto the display. */
 void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+/** Draw a thick (3 pixels) circle onto the display. */
+void lcd22_draw_thick_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 
 #endif /* LCD22_H_ */
