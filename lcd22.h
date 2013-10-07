@@ -68,12 +68,12 @@ void lcd22_init();
 /** Clear the whole screen of the display with a solid color. */
 void lcd22_clear_screen(uint16_t color);
 /** Clear a rectangular area of the display with a solid color. */
-void lcd22_clear_area(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
+void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t color);
 
 /** Draw an ASCII character on the display. */
-void lcd22_draw_char(char c, uint16_t x, uint16_t y, uint16_t foreground_color, uint16_t background_color);
+void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 /** Draw a string onto the display. */
-void lcd22_draw_string(const char *str, uint16_t x, uint16_t y, uint16_t foreground_color, uint16_t background_color);
+void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 
 /** Draw a dot onto the display. */
 void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color);

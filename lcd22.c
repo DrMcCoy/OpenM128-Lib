@@ -255,14 +255,18 @@ static void lcd22_finish_write() {
 }
 
 // Set a draw area on the LCD screen
-static bool lcd22_set_draw_area(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-                                uint16_t *left, uint16_t *top, uint16_t *right, uint16_t *bottom) {
+static bool lcd22_set_draw_area(int16_t x, int16_t y, int16_t width, int16_t height,
+                                int16_t *left, int16_t *top, int16_t *right, int16_t *bottom) {
 
+	if ((width <= 0) || (height <= 0))
+		// Nothing to do
+		return FALSE;
+	
 	// Clamp to valid area
-	*left   = MIN(x             , LCD22_WIDTH  - 1);
-	*top    = MIN(y             , LCD22_HEIGHT - 1);
-	*right  = MIN(x + width  - 1, LCD22_WIDTH  - 1);
-	*bottom = MIN(y + height - 1, LCD22_HEIGHT - 1);
+	*left   = CLIP(x             , 0, LCD22_WIDTH  - 1);
+	*top    = CLIP(y             , 0, LCD22_HEIGHT - 1);
+	*right  = CLIP(x + width  - 1, 0, LCD22_WIDTH  - 1);
+	*bottom = CLIP(y + height - 1, 0, LCD22_HEIGHT - 1);
 
 	if ((left >= right) || (top >= bottom))
 		// Nothing to do
@@ -402,10 +406,10 @@ void lcd22_clear_screen(uint16_t color) {
 	lcd22_finish_write();
 }
 
-void lcd22_clear_area(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {
-	uint16_t i, j;
+void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t color) {
+	int16_t i, j;
 
-	uint16_t left, top, right, bottom;
+	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
@@ -418,11 +422,11 @@ void lcd22_clear_area(uint16_t x, uint16_t y, uint16_t width, uint16_t height, u
 	lcd22_finish_write();
 }
 
-void lcd22_draw_char(char c, uint16_t x, uint16_t y, uint16_t foreground_color, uint16_t background_color) {
+void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
 	uint8_t i, j, b;
 	const uint8_t *p;
 
-	uint16_t left, top, right, bottom;
+	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, &left, &top, &right, &bottom))
 		return;
 
@@ -453,7 +457,7 @@ void lcd22_draw_char(char c, uint16_t x, uint16_t y, uint16_t foreground_color, 
 	lcd22_finish_write();
 }
 
-void lcd22_draw_string(const char *str, uint16_t x, uint16_t y, uint16_t foreground_color, uint16_t background_color) {
+void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
 	/* Draw each character in the string, one after each other.
 	 * If the cursor reaches the right edge of the display, start a new line.
 	 * If the cursor reaches the bottom edge of the display, continue from the top.
@@ -474,10 +478,7 @@ void lcd22_draw_string(const char *str, uint16_t x, uint16_t y, uint16_t foregro
 }
 
 void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color) {
-	if ((x < 0) || (x >= LCD22_WIDTH) || (y < 0) || (y >= LCD22_HEIGHT))
-		return;
-
-	uint16_t left, top, right, bottom;
+	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, 1, 1, &left, &top, &right, &bottom))
 		return;
 
