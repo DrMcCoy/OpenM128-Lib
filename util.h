@@ -37,6 +37,10 @@
 	#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
+#ifndef CLIP
+	#define CLIP(x, lower, upper) MAX((lower), MIN((x), (upper)))
+#endif
+
 #ifndef ABS
 	#define ABS(x) (((x) < 0) ? (-(x)) : (x))
 #endif
