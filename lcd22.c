@@ -261,7 +261,7 @@ static bool lcd22_set_draw_area(int16_t x, int16_t y, int16_t width, int16_t hei
 	if ((width <= 0) || (height <= 0))
 		// Nothing to do
 		return FALSE;
-	
+
 	// Clamp to valid area
 	*left   = CLIP(x             , 0, LCD22_WIDTH  - 1);
 	*top    = CLIP(y             , 0, LCD22_HEIGHT - 1);
@@ -491,7 +491,7 @@ void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color) {
 
 void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color) {
 	uint8_t i;
-	
+
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x -1 , y - 1, 3, 3, &left, &top, &right, &bottom))
 		return;
