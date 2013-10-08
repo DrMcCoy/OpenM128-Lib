@@ -40,7 +40,7 @@
 #define LCD22_NUM_CHAR_X (LCD22_WIDTH  / LCD22_CHAR_WIDTH ) // Number of characters that fit onto the screen horizontally
 #define LCD22_NUM_CHAR_Y (LCD22_HEIGHT / LCD22_CHAR_HEIGHT) // Number of characters that fit onto the screen vertically
 
-// Colors
+// Colors, RGB565 (5 bit red, 6 bit green, 5 bit blue)
 
 #define  LCD22_CYAN       0x07FF
 #define  LCD22_PURPLE     0xF81F
@@ -61,6 +61,7 @@
 #define  LCD22_DARKBLUE   0x01CF
 #define  LCD22_LIGHTBLUE  0x7D7C
 
+#define LCD22_COLOR(R, G, B) (uint16_t)(((((R) >> 3) & 0x1F) << 11) | ((((G) >> 2) & 0x3F) << 5) | ((((B) >> 3) & 0x1F) << 0))
 
 /** Initialize the 2.2" color display. */
 void lcd22_init();
@@ -112,5 +113,11 @@ void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t
 
 /** Draw a 16bpp color bitmap onto the display. */
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 24bpp RGB color bitmap onto the display.
+ *
+ *  Note: The bitmap will be converted to RGB565 16bpp data on-the-fly.
+ */
+void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 
 #endif /* LCD22_H_ */

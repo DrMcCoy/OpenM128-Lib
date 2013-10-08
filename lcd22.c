@@ -591,3 +591,25 @@ void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16
 
 	lcd22_finish_write();
 }
+
+void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
+	int16_t i, j;
+
+	int16_t left, top, right, bottom;
+	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	for (i = top; i <= bottom; i++) {
+		for (j = left; j <= right; j++) {
+			const uint8_t r = *bitmap++;
+			const uint8_t g = *bitmap++;
+			const uint8_t b = *bitmap++;
+
+			lcd22_write_data(LCD22_COLOR(r, g, b));
+		}
+	}
+
+	lcd22_finish_write();
+}
