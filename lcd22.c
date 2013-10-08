@@ -412,38 +412,11 @@ void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint1
 }
 
 void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
-	uint8_t i, j, b;
-	const uint8_t *p;
-
-	int16_t left, top, right, bottom;
-	if (!lcd22_set_draw_area(x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, &left, &top, &right, &bottom))
-		return;
-
-	lcd22_prepare_write();
-
 	// Make sure we don't print invalid / unsupported characters
 	if ((uint8_t)c >= 128)
 		c = 0;
 
-	/* Go through the image data for the selected character:
-	 * Each character consists of 16 rows of 8 pixels. Each row is one byte; each pixel is one bit.
-	 * If the bit is set, it belongs to the character, so draw the foreground color.
-	 * If the bit is not set, it doesn't belong to the character, so draw the background color.
-	 */
-
-	p = lcd22_ascii + c * 16;
-
-	for (j = 0; j < 16; j++) {
-		b = *(p + j);
-
-		for (i = 0; i < 8; i++) {
-			lcd22_write_data((b & 0x80) ? foreground_color : background_color);
-
-			b <<= 1;
-		}
-	}
-
-	lcd22_finish_write();
+	lcd22_draw_bitmap_1bpp(lcd22_ascii + c * 16, x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, foreground_color, background_color);
 }
 
 void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
@@ -470,18 +443,8 @@ void lcd22_draw_dot(int16_t x, int16_t y, int16_t size, uint16_t color) {
 	// Center the dot around the given coordinates
 	x -= size >> 1;
 	y -= size >> 1;
-	
-	int16_t left, top, right, bottom, count;
-	if (!lcd22_set_draw_area(x, y, size, size, &left, &top, &right, &bottom))
-		return;
 
-	lcd22_prepare_write();
-
-	count = (right - left + 1) * (bottom - top + 1);
-	while (count-- > 0)
-		lcd22_write_data(color);
-
-	lcd22_finish_write();
+	lcd22_clear_area(x, y, size, size, color);
 }
 
 /* Draw a line using Bresenham's Line Algorithm.
@@ -520,6 +483,22 @@ void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thi
 	}
 }
 
+void lcd22_draw_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thickness, uint16_t color) {
+	lcd22_draw_line(x0, y0, x1, y0, thickness, color);
+	lcd22_draw_line(x0, y1, x1, y1, thickness, color);
+	lcd22_draw_line(x0, y0, x0, y1, thickness, color);
+	lcd22_draw_line(x1, y0, x1, y1, thickness, color);
+}
+
+void lcd22_draw_filled_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
+	if (x0 > x1)
+		SWAP(x0, x1);
+	if (y0 > y1)
+		SWAP(y0, y1);
+
+	lcd22_clear_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, color);
+}
+
 /* Draw a circle using the Midpoint Circle Algorithm.
  * See https://en.wikipedia.org/wiki/Midpoint_circle_algorithm for specifics.
  */
@@ -554,4 +533,45 @@ void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness
 		lcd22_draw_dot(x0 + y, y0 - x, thickness, color);
 		lcd22_draw_dot(x0 - y, y0 - x, thickness, color);
 	}
+}
+
+void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
+	int16_t x, y;
+
+	for(y= -radius; y <= radius; y++)
+		for(x= -radius; x <= radius; x++)
+			if((x*x + y*y) <= (radius * radius))
+				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
+}
+
+void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
+                            uint16_t foreground_color, uint16_t background_color) {
+
+	uint16_t i, j;
+	uint8_t bitPos, p;
+
+	int16_t left, top, right, bottom;
+	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	// Go through each row of the bitmap data, always starting with a new byte
+	for (j = top; j <= bottom; j++) {
+		bitPos = 7;
+
+		for (i = left; i <= right; i++) {
+			// Fetch a new byte if necessary
+			if (bitPos++ >= 7) {
+				bitPos = 0;
+				p = *bitmap++;
+			}
+
+			// If the bit is set, draw a pixel with the foreground color, otherwise use the background color
+			lcd22_write_data((p & 0x80) ? foreground_color : background_color);
+			p <<= 1;
+		}
+	}
+
+	lcd22_finish_write();
 }

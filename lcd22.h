@@ -77,9 +77,32 @@ void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foregroun
 
 /** Draw a dot onto the display. */
 void lcd22_draw_dot(int16_t x, int16_t y, int16_t size, uint16_t color);
+
 /** Draw a line onto the display. */
 void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thickness, uint16_t color);
+
+/** Draw a rectangle onto the display. */
+void lcd22_draw_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thickness, uint16_t color);
+/** Draw a filled rectangle onto the display. */
+void lcd22_draw_filled_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+
 /** Draw a circle onto the display. */
 void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness, uint16_t color);
+/** Draw a filled circle onto the display. */
+void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+
+/** Draw a monochrome (1 bit per pixel) bitmap onto the display.
+ *
+ *  @param bitmap Image data, one bit per pixel. The most significant bit is the left-most pixel.
+ *  @param x      x coordinate of the destination position.
+ *  @param y      y coordinate of the destination position.
+ *  @param width  Width of the bitmap data.
+ *                Note: If the width is not divisible by 8, each row of the bitmap data needs to be padded to a full byte.
+ *  @param height Height of the bitmap data.
+ *  @param foreground_color color to use for set (1) bits in the bitmap data.
+ *  @param background_color color to use for unset (0) bits in the bitmap data.
+ */
+void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
+                            uint16_t foreground_color, uint16_t background_color);
 
 #endif /* LCD22_H_ */
