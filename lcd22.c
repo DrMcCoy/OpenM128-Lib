@@ -544,7 +544,7 @@ void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t c
 				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
 }
 
-static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *palette, 
+static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *palette,
                                        int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 
 	uint16_t i, j;
