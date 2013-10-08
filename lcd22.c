@@ -544,11 +544,11 @@ void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t c
 				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
 }
 
-void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
-                            uint16_t foreground_color, uint16_t background_color) {
+static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *palette, 
+                                       int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 
 	uint16_t i, j;
-	uint8_t bitPos, p;
+	uint8_t bitPos, p = 0x00;
 
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
@@ -558,22 +558,30 @@ void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t
 
 	// Go through each row of the bitmap data, always starting with a new byte
 	for (j = top; j <= bottom; j++) {
-		bitPos = 7;
+		bitPos = 255;
 
 		for (i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
-			if (bitPos++ >= 7) {
+			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
 				p = *bitmap++;
 			}
 
-			// If the bit is set, draw a pixel with the foreground color, otherwise use the background color
-			lcd22_write_data((p & 0x80) ? foreground_color : background_color);
-			p <<= 1;
+			// Take n bits as an index into the palette and draw the pixel
+			lcd22_write_data(palette[p >> (8 - bits)]);
+			p <<= bits;
 		}
 	}
 
 	lcd22_finish_write();
+}
+
+void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
+                            uint16_t foreground_color, uint16_t background_color) {
+
+	const uint16_t palette[2] = {background_color, foreground_color};
+
+	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 1);
 }
 
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
@@ -612,4 +620,16 @@ void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_
 	}
 
 	lcd22_finish_write();
+}
+
+void lcd22_draw_bitmap_2bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height) {
+	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 2);
+}
+
+void lcd22_draw_bitmap_4bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height) {
+	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 4);
+}
+
+void lcd22_draw_bitmap_8bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height) {
+	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 8);
 }

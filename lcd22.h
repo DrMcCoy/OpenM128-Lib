@@ -120,4 +120,13 @@ void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16
  */
 void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 
+/** Draw a 2bpp palette'd bitmap onto the display. */
+void lcd22_draw_bitmap_2bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 4bpp palette'd bitmap onto the display. */
+void lcd22_draw_bitmap_4bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 8bpp palette'd bitmap onto the display. */
+void lcd22_draw_bitmap_8bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
 #endif /* LCD22_H_ */
