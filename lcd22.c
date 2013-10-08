@@ -165,14 +165,17 @@ static const uint8_t lcd22_ascii[] = {
 
 // -- Utility macros --
 
-#define LCD22_RST_H()  PORTB |=  (1<<PB6);
-#define LCD22_RST_L()  PORTB &= ~(1<<PB6);
+#define LCD22_RST_H()        PORTB |=  (1<<PB6)
+#define LCD22_RST_L()        PORTB &= ~(1<<PB6)
 
-#define LCD22_RS_H()   PORTB |=  (1<<PB5);
-#define LCD22_RS_L()   PORTB &= ~(1<<PB5);
+#define LCD22_RS_H()         PORTB |=  (1<<PB5)
+#define LCD22_RS_L()         PORTB &= ~(1<<PB5)
 
-#define LCD22_CS_H()   PORTD |=  (1<<PD6);
-#define LCD22_CS_L()   PORTD &= ~(1<<PD6);
+#define LCD22_CS_H()         PORTD |=  (1<<PD6)
+#define LCD22_CS_L()         PORTD &= ~(1<<PD6)
+
+#define LCD22_TOUCH_CS_H()   PORTB |=  (1<<PB4)
+#define LCD22_TOUCH_CS_L()   PORTB &= ~(1<<PB4)
 
 // -- Internal support functions --
 
@@ -186,6 +189,10 @@ static void lcd22_spio_init(void) {
 	PORTB &= ~0x7F;
 	PORTD &= ~0x40;
 
+	// Deactivate touchscreen CS
+	LCD22_TOUCH_CS_H();
+
+	// Deactivate LCD CS
 	LCD22_RS_H();
 	LCD22_CS_H();
 
@@ -238,20 +245,6 @@ static void lcd22_prepare_write() {
 static void lcd22_finish_write() {
 	LCD22_RS_L();
 	LCD22_CS_H();
-
-	// Reset draw window
-	lcd22_write_command(0x210, 0x0000);
-	lcd22_write_command(0x212, 0x0000);
-	lcd22_write_command(0x211, LCD22_WIDTH  - 1);
-	lcd22_write_command(0x213, LCD22_HEIGHT - 1);
-	lcd22_write_command(0x214, 0x0000);
-	lcd22_write_command(0x215, 0x0000);
-	lcd22_write_command(0x216, 0x0000);
-	lcd22_write_command(0x217, 0x0000);
-
-	// RAM position
-	lcd22_write_command(0x200, 0x0000);
-	lcd22_write_command(0x201, 0x0000);
 }
 
 // Set a draw area on the LCD screen
@@ -268,7 +261,7 @@ static bool lcd22_set_draw_area(int16_t x, int16_t y, int16_t width, int16_t hei
 	*right  = CLIP(x + width  - 1, 0, LCD22_WIDTH  - 1);
 	*bottom = CLIP(y + height - 1, 0, LCD22_HEIGHT - 1);
 
-	if ((left >= right) || (top >= bottom))
+	if ((*left > *right) || (*top > *bottom))
 		// Nothing to do
 		return FALSE;
 
@@ -292,10 +285,6 @@ static void lcd22_reset_draw_area() {
 	lcd22_write_command(0x212, 0x0000);
 	lcd22_write_command(0x211, LCD22_WIDTH  - 1);
 	lcd22_write_command(0x213, LCD22_HEIGHT - 1);
-	lcd22_write_command(0x214, 0x0000);
-	lcd22_write_command(0x215, 0x0000);
-	lcd22_write_command(0x216, 0x0000);
-	lcd22_write_command(0x217, 0x0000);
 
 	// RAM position
 	lcd22_write_command(0x200, 0x0000);
@@ -478,27 +467,28 @@ void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foregroun
 }
 
 void lcd22_draw_dot(int16_t x, int16_t y, uint16_t color) {
-	int16_t left, top, right, bottom;
+	int16_t left, top, right, bottom, count;
 	if (!lcd22_set_draw_area(x, y, 1, 1, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	lcd22_write_data(color);
+	count = (right - left + 1) * (bottom - top + 1);
+	while (count-- > 0)
+		lcd22_write_data(color);
 
 	lcd22_finish_write();
 }
 
 void lcd22_draw_big_dot(int16_t x, int16_t y, uint16_t color) {
-	uint8_t i;
-
-	int16_t left, top, right, bottom;
+	int16_t left, top, right, bottom, count;
 	if (!lcd22_set_draw_area(x -1 , y - 1, 3, 3, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = 0; i < 3*3; i++)
+	count = (right - left + 1) * (bottom - top + 1);
+	while (count-- > 0)
 		lcd22_write_data(color);
 
 	lcd22_finish_write();
