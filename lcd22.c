@@ -575,3 +575,19 @@ void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t
 
 	lcd22_finish_write();
 }
+
+void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
+	int16_t i, j;
+
+	int16_t left, top, right, bottom;
+	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	for (i = top; i <= bottom; i++)
+		for (j = left; j <= right; j++)
+			lcd22_write_data(*bitmap++);
+
+	lcd22_finish_write();
+}

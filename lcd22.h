@@ -70,11 +70,6 @@ void lcd22_clear_screen(uint16_t color);
 /** Clear a rectangular area of the display with a solid color. */
 void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t color);
 
-/** Draw an ASCII character on the display. */
-void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-/** Draw a string onto the display. */
-void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-
 /** Draw a dot onto the display. */
 void lcd22_draw_dot(int16_t x, int16_t y, int16_t size, uint16_t color);
 
@@ -91,6 +86,16 @@ void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness
 /** Draw a filled circle onto the display. */
 void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 
+/* Note: The following functions to *not* clip smartly. They only make sure that nothing "outside" of the
+ *       visible screen range is overwritten. If part of the destination area lies outside the screen, you
+ *       will *not* get the part that would be visible, you will get broken pictures / characters.
+ */
+
+/** Draw an ASCII character on the display. */
+void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
+/** Draw a string onto the display. */
+void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
+
 /** Draw a monochrome (1 bit per pixel) bitmap onto the display.
  *
  *  @param bitmap Image data, one bit per pixel. The most significant bit is the left-most pixel.
@@ -104,5 +109,8 @@ void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t c
  */
 void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
                             uint16_t foreground_color, uint16_t background_color);
+
+/** Draw a 16bpp color bitmap onto the display. */
+void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 
 #endif /* LCD22_H_ */
