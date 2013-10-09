@@ -101,7 +101,7 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 
 /* Note: The following functions to *not* clip smartly. They only make sure that nothing "outside" of the
  *       visible screen range is overwritten. If part of the destination area lies outside the screen, you
- *       will *not* get the part that would be visible, you will get broken pictures / characters.
+ *       will *not* get the part that would be visible, you will get broken images / characters.
  */
 
 /** Draw an ASCII character on the display. */
@@ -110,6 +110,12 @@ void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, ui
 void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 /** Draw a string held in program memory onto the display. */
 void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
+
+/* Note: The following functions exist in up to 3 versions:
+ * - Functions that expect both bitmap and palette in RAM
+ * - Functions that expect the bitmap in program memory and the palette in RAM (_P)
+ * - Functions that expect both the bitmap and the palette in program memory (_PP)
+ */
 
 /** Draw a monochrome (1 bit per pixel) bitmap onto the display.
  *
@@ -125,16 +131,19 @@ void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foregro
 void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
                             uint16_t foreground_color, uint16_t background_color);
 
-/** Draw a monochrome (1 bit per pixel) bitmap held in program space onto the display.
- *
- *  This function works the same way as lcd22_draw_bitmap_1bpp(), except that it expects a pointer
- *  to bitmap memory that lies in program space.
- */
+/** Draw a monochrome (1 bit per pixel) bitmap held in program space onto the display. */
 void lcd22_draw_bitmap_1bpp_P(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
                               uint16_t foreground_color, uint16_t background_color);
 
+/** Draw a monochrome (1 bit per pixel) bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_1bpp_PP(const uint8_t *bitmap, const uint16_t *palette,
+                               int16_t x, int16_t y, int16_t width, int16_t height);
+
 /** Draw a 16bpp color bitmap onto the display. */
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 16bpp color bitmap help in program space onto the display. */
+void lcd22_draw_bitmap_16bpp_P(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 
 /** Draw a 24bpp RGB color bitmap onto the display.
  *
@@ -142,14 +151,35 @@ void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16
  */
 void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 
+/** Draw a 24bpp RGB color bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_24bpp_P(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
+
 /** Draw a 2bpp palette'd bitmap onto the display. */
 void lcd22_draw_bitmap_2bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 2bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_2bpp_P(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 2bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_2bpp_PP(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
 
 /** Draw a 4bpp palette'd bitmap onto the display. */
 void lcd22_draw_bitmap_4bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
 
+/** Draw a 4bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_4bpp_P(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 4bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_4bpp_PP(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
 /** Draw a 8bpp palette'd bitmap onto the display. */
 void lcd22_draw_bitmap_8bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 8bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_8bpp_P(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
+
+/** Draw a 8bpp palette'd bitmap held in program space onto the display. */
+void lcd22_draw_bitmap_8bpp_PP(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height);
 
 /** Query the state of the touch screen.
  *
