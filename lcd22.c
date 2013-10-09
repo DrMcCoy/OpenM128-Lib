@@ -619,9 +619,9 @@ void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness
 void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
 	int16_t x, y;
 
-	for(y= -radius; y <= radius; y++)
-		for(x= -radius; x <= radius; x++)
-			if((x*x + y*y) <= (radius * radius))
+	for (y = -radius; y <= radius; y++)
+		for (x = -radius; x <= radius; x++)
+			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
 }
 
@@ -638,13 +638,13 @@ void lcd22_draw_hgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
 	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
 
-	for(y= -radius; y <= radius; y++) {
+	for (y = -radius; y <= radius; y++) {
 		r = LCD22_COLOR_RED  (color1) << 7;
 		g = LCD22_COLOR_GREEN(color1) << 7;
 		b = LCD22_COLOR_BLUE (color1) << 7;
 
-		for(x= -radius; x <= radius; x++) {
-			if((x*x + y*y) <= (radius * radius))
+		for (x = -radius; x <= radius; x++) {
+			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 
 			r += stepr;
@@ -670,9 +670,9 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 	r = LCD22_COLOR_RED  (color1) << 7;
 	g = LCD22_COLOR_GREEN(color1) << 7;
 	b = LCD22_COLOR_BLUE (color1) << 7;
-	for(y= -radius; y <= radius; y++) {
-		for(x= -radius; x <= radius; x++)
-			if((x*x + y*y) <= (radius * radius))
+	for (y = -radius; y <= radius; y++) {
+		for (x = -radius; x <= radius; x++)
+			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 
 		r += stepr;
