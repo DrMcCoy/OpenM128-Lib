@@ -24,37 +24,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UTIL_H_
-#define UTIL_H_
+#include "util.h"
 
-#include <stdint.h>
-#include <string.h>
 
-#ifndef MAX
-	#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-#endif
+/* Square root function using integer math, rounding to the nearest integer.
+ * See http://stackoverflow.com/questions/1100090/looking-for-an-efficient-integer-square-root-algorithm-for-arm-thumb2/1101217#1101217
+ * for specifics.
+ */
+uint32_t sqrt_integer_rounded(uint32_t a_nInput) {
+	uint32_t op  = a_nInput;
+	uint32_t res = 0;
+	uint32_t one = 1uL << 30; // The second-to-top bit is set: use 1u << 14 for uint16_t type; use 1uL<<30 for uint32_t type
 
-#ifndef MIN
-	#define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#endif
+	// "one" starts at the highest power of four <= than the argument.
+	while (one > op) {
+		one >>= 2;
+	}
 
-#ifndef CLIP
-	#define CLIP(x, lower, upper) MAX((lower), MIN((x), (upper)))
-#endif
+	while (one != 0) {
+		if (op >= res + one) {
+			op = op - (res + one);
+			res = res +  2 * one;
+		}
+		res >>= 1;
+		one >>= 2;
+	}
 
-#ifndef ABS
-	#define ABS(x) (((x) < 0) ? (-(x)) : (x))
-#endif
+	/* Do arithmetic rounding to nearest integer */
+	if (op > res)
+		res++;
 
-#ifndef SWAP
-	#define SWAP(x,y) do { \
-		unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
-		memcpy(swap_temp,&y,sizeof(x)); \
-		memcpy(&y,&x,       sizeof(x)); \
-		memcpy(&x,swap_temp,sizeof(x)); \
-	} while(0)
-#endif
-
-uint32_t sqrt_integer_rounded(uint32_t a_nInput);
-
-#endif /* UTIL_H_ */
+	return res;
+}
