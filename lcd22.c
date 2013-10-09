@@ -450,6 +450,26 @@ void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foregroun
 	}
 }
 
+void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
+	/* Draw each character in the string, one after each other.
+	 * If the cursor reaches the right edge of the display, start a new line.
+	 * If the cursor reaches the bottom edge of the display, continue from the top.
+	 */
+
+	while (pgm_read_byte(str)) {
+		lcd22_draw_char(pgm_read_byte(str++), x, y, foreground_color, background_color);
+
+		x += LCD22_CHAR_WIDTH;
+		if (x >= LCD22_WIDTH) {
+			x = 0;
+
+			y += LCD22_CHAR_HEIGHT;
+			if (y >= LCD22_HEIGHT)
+				y = 0;
+		}
+	}
+}
+
 void lcd22_draw_dot(int16_t x, int16_t y, int16_t size, uint16_t color) {
 	// Center the dot around the given coordinates
 	x -= size >> 1;

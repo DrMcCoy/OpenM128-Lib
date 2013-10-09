@@ -108,6 +108,8 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 /** Draw a string onto the display. */
 void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
+/** Draw a string held in program memory onto the display. */
+void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 
 /** Draw a monochrome (1 bit per pixel) bitmap onto the display.
  *
