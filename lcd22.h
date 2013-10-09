@@ -63,6 +63,10 @@
 
 #define LCD22_COLOR(R, G, B) (uint16_t)(((((R) >> 3) & 0x1F) << 11) | ((((G) >> 2) & 0x3F) << 5) | ((((B) >> 3) & 0x1F) << 0))
 
+#define LCD22_COLOR_RED(color)   (uint8_t)((((color) >> 11) & 0x1F) << 3)
+#define LCD22_COLOR_GREEN(color) (uint8_t)((((color) >>  5) & 0x3F) << 2)
+#define LCD22_COLOR_BLUE(color)  (uint8_t)((((color) >>  0) & 0x1F) << 3)
+
 /** Initialize the 2.2" color display. */
 void lcd22_init();
 
@@ -81,6 +85,10 @@ void lcd22_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thi
 void lcd22_draw_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t thickness, uint16_t color);
 /** Draw a filled rectangle onto the display. */
 void lcd22_draw_filled_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+/** Draw a rectangle filled with a horizontal color gradient onto the display. */
+void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2);
+/** Draw a rectangle filled with a vertical color gradient onto the display. */
+void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2);
 
 /** Draw a circle onto the display. */
 void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness, uint16_t color);

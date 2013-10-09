@@ -499,6 +499,85 @@ void lcd22_draw_filled_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 	lcd22_clear_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, color);
 }
 
+void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2) {
+	int16_t i, j;
+	int16_t stepr, stepg, stepb;
+	uint16_t r, g, b;
+	int16_t left, top, right, bottom;
+	
+	if (x0 > x1)
+		SWAP(x0, x1);
+	if (y0 > y1)
+		SWAP(y0, y1);
+
+	if (!lcd22_set_draw_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
+	 * This gives us the amount we need to add for each pixel to get a linear gradient.
+	 * We shift the color difference by 7 bits for increased precision.
+	 */
+	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (right - left);
+	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (right - left);
+	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (right - left);
+
+	for (i = top; i <= bottom; i++) {
+		r = LCD22_COLOR_RED  (color1) << 7;
+		g = LCD22_COLOR_GREEN(color1) << 7;
+		b = LCD22_COLOR_BLUE (color1) << 7;
+		
+		for (j = left; j <= right; j++) {
+			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
+			r += stepr;
+			g += stepg;
+			b += stepb;
+		}
+	}
+
+	lcd22_finish_write();
+}
+
+void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2) {
+	int16_t i, j;
+	int16_t stepr, stepg, stepb;
+	uint16_t r, g, b;
+	int16_t left, top, right, bottom;
+	
+	if (x0 > x1)
+		SWAP(x0, x1);
+	if (y0 > y1)
+		SWAP(y0, y1);
+
+	if (!lcd22_set_draw_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
+	 * This gives us the amount we need to add for each pixel to get a linear gradient.
+	 * We shift the color difference by 7 bits for increased precision.
+	 */
+	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (bottom - top);
+	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (bottom - top);
+	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (bottom - top);
+
+	r = LCD22_COLOR_RED  (color1) << 7;
+	g = LCD22_COLOR_GREEN(color1) << 7;
+	b = LCD22_COLOR_BLUE (color1) << 7;
+	for (i = top; i <= bottom; i++) {
+		for (j = left; j <= right; j++)
+			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
+		
+		r += stepr;
+		g += stepg;
+		b += stepb;
+	}
+
+	lcd22_finish_write();
+}
+
 /* Draw a circle using the Midpoint Circle Algorithm.
  * See https://en.wikipedia.org/wiki/Midpoint_circle_algorithm for specifics.
  */
