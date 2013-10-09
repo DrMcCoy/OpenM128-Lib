@@ -177,17 +177,19 @@ static const uint8_t lcd22_ascii[] = {
 #define LCD22_TOUCH_CS_H()   PORTB |=  (1<<PB4)
 #define LCD22_TOUCH_CS_L()   PORTB &= ~(1<<PB4)
 
-// -- Internal support functions --
+// -- Internal LCD support functions --
 
 // Initialize the SPI I/O
 static void lcd22_spio_init(void) {
 	// Set direction of LCD pins
 	DDRB = (DDRB & ~0x7F) | 0x77;
 	DDRD |= 0x40;
+	DDRE &= ~0x10;
 
 	// Clear LCD pins / pull-up register setting
 	PORTB &= ~0x7F;
 	PORTD &= ~0x40;
+	PORTE &= ~0x10;
 
 	// Deactivate touchscreen CS
 	LCD22_TOUCH_CS_H();
@@ -767,4 +769,100 @@ void lcd22_draw_bitmap_4bpp(const uint8_t *bitmap, const uint16_t *palette, int1
 
 void lcd22_draw_bitmap_8bpp(const uint8_t *bitmap, const uint16_t *palette, int16_t x, int16_t y, int16_t width, int16_t height) {
 	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 8);
+}
+
+// -- Touch screen utility macros
+
+#define LCD22_TOUCH_COMMAND_READ_X  0xD0
+#define LCD22_TOUCH_COMMAND_READ_Y  0x90
+
+// -- Internal touch screen support functions --
+
+// Read ADC value from the touch screen controller
+int16_t lcd22_touch_read_adc(uint8_t command) {
+	uint16_t numl, numh;
+
+	LCD22_CS_H();
+	LCD22_TOUCH_CS_L();
+
+	_delay_us(2);
+	lcd22_spio_send(command);
+	_delay_us(2);
+
+	numh = lcd22_spio_send(0x00);
+	numl = lcd22_spio_send(0x00);
+
+	LCD22_TOUCH_CS_H();
+
+	return ((numh << 8) + numl) >> 4;
+}
+
+// Read ADC value from the touch screen controller several times and return an average (ignoring outliers)
+#define LCD22_TOUCH_AVERAGE_READ   10
+#define LCD22_TOUCH_AVERAGE_IGNORE  4
+int16_t lcd22_touch_read_adc_average(uint8_t command) {
+	int16_t buf[LCD22_TOUCH_AVERAGE_READ], avg;
+	uint8_t i, j;
+
+	// Read the ADC x times
+	for (i = 0; i < LCD22_TOUCH_AVERAGE_READ; i++)
+		buf[i] = lcd22_touch_read_adc(command);
+
+	// Sort the read ADC values
+	for (i = 0; i < LCD22_TOUCH_AVERAGE_READ-1; i++)
+		for (j = i + 1; j < LCD22_TOUCH_AVERAGE_READ; j++)
+			if (buf[i] > buf[j])
+				SWAP(buf[i], buf[j]);
+
+	// Average over the middle values
+	avg = 0;
+	for (i = LCD22_TOUCH_AVERAGE_IGNORE; i < (LCD22_TOUCH_AVERAGE_READ - LCD22_TOUCH_AVERAGE_IGNORE); i++)
+		avg += buf[i];
+	avg /= (LCD22_TOUCH_AVERAGE_READ - 2*LCD22_TOUCH_AVERAGE_IGNORE);
+
+	return avg;
+}
+
+bool lcd22_touch_read_adc_position(int16_t *x, int16_t *y) {
+	*x =lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_X);
+	*y =lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_Y);
+
+	if ((*x < 100) || (*y < 100))
+		return FALSE;
+
+	return TRUE;
+}
+
+// Read the averaged position twice and check if the values are within a certain error range
+#define LCD22_TOUCH_ERROR_RANGE 50
+bool lcd22_touch_read_adc_position_safe(int16_t *x, int16_t *y) {
+	int16_t x1, y1, x2, y2;
+
+	if (!lcd22_touch_read_adc_position(&x1, &y1))
+		return FALSE;
+	if (!lcd22_touch_read_adc_position(&x2, &y2))
+		return FALSE;
+
+	if ((ABS(x1 - x2) >= LCD22_TOUCH_ERROR_RANGE) || (ABS(y1 - y2) >= LCD22_TOUCH_ERROR_RANGE))
+		return FALSE;
+
+	*x = (x1 + x2) / 2;
+	*y = (y1 + y2) / 2;
+	return TRUE;
+}
+
+void lcd22_touch_convert_adc_position_to_lcd_position(int16_t adc_x, int16_t adc_y, int16_t *lcd_x, int16_t *lcd_y) {
+	*lcd_x = (((int32_t)adc_x - 100) * LCD22_WIDTH ) / 1800;
+	*lcd_y = (((int32_t)adc_y - 100) * LCD22_HEIGHT) / 1300;
+}
+
+// -- Public touch screen functions --
+
+bool lcd22_get_touch(int16_t *x, int16_t *y) {
+	int16_t adc_x, adc_y;
+	if (!lcd22_touch_read_adc_position_safe(&adc_x, &adc_y))
+		return FALSE;
+
+	lcd22_touch_convert_adc_position_to_lcd_position(adc_x, adc_y, x, y);
+	return TRUE;
 }
