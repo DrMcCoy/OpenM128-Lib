@@ -787,7 +787,7 @@ void lcd22_draw_bitmap_8bpp(const uint8_t *bitmap, const uint16_t *palette, int1
 // -- Internal touch screen support functions --
 
 // Read ADC value from the touch screen controller
-int16_t lcd22_touch_read_adc(uint8_t command) {
+static int16_t lcd22_touch_read_adc(uint8_t command) {
 	uint16_t numl, numh;
 
 	LCD22_CS_H();
@@ -808,7 +808,7 @@ int16_t lcd22_touch_read_adc(uint8_t command) {
 // Read ADC value from the touch screen controller several times and return an average (ignoring outliers)
 #define LCD22_TOUCH_AVERAGE_READ   10
 #define LCD22_TOUCH_AVERAGE_IGNORE  4
-int16_t lcd22_touch_read_adc_average(uint8_t command) {
+static int16_t lcd22_touch_read_adc_average(uint8_t command) {
 	int16_t buf[LCD22_TOUCH_AVERAGE_READ], avg;
 	uint8_t i, j;
 
@@ -831,9 +831,9 @@ int16_t lcd22_touch_read_adc_average(uint8_t command) {
 	return avg;
 }
 
-bool lcd22_touch_read_adc_position(int16_t *x, int16_t *y) {
-	*x =lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_X);
-	*y =lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_Y);
+static bool lcd22_touch_read_adc_position(int16_t *x, int16_t *y) {
+	*x = lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_X);
+	*y = lcd22_touch_read_adc_average(LCD22_TOUCH_COMMAND_READ_Y);
 
 	if ((*x < 100) || (*y < 100))
 		return FALSE;
@@ -843,7 +843,7 @@ bool lcd22_touch_read_adc_position(int16_t *x, int16_t *y) {
 
 // Read the averaged position twice and check if the values are within a certain error range
 #define LCD22_TOUCH_ERROR_RANGE 50
-bool lcd22_touch_read_adc_position_safe(int16_t *x, int16_t *y) {
+static bool lcd22_touch_read_adc_position_safe(int16_t *x, int16_t *y) {
 	int16_t x1, y1, x2, y2;
 
 	if (!lcd22_touch_read_adc_position(&x1, &y1))
@@ -859,7 +859,7 @@ bool lcd22_touch_read_adc_position_safe(int16_t *x, int16_t *y) {
 	return TRUE;
 }
 
-void lcd22_touch_convert_adc_position_to_lcd_position(int16_t adc_x, int16_t adc_y, int16_t *lcd_x, int16_t *lcd_y) {
+static void lcd22_touch_convert_adc_position_to_lcd_position(int16_t adc_x, int16_t adc_y, int16_t *lcd_x, int16_t *lcd_y) {
 	*lcd_x = (((int32_t)adc_x - 100) * LCD22_WIDTH ) / 1800;
 	*lcd_y = (((int32_t)adc_y - 100) * LCD22_HEIGHT) / 1300;
 }
