@@ -623,6 +623,62 @@ void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t c
 				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
 }
 
+void lcd22_draw_hgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2) {
+	int16_t x, y;
+	int16_t stepr, stepg, stepb;
+	uint16_t r, g, b;
+
+	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
+	 * This gives us the amount we need to add for each pixel to get a linear gradient.
+	 * We shift the color difference by 7 bits for increased precision.
+	 */
+	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
+	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
+	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
+
+	for(y= -radius; y <= radius; y++) {
+		r = LCD22_COLOR_RED  (color1) << 7;
+		g = LCD22_COLOR_GREEN(color1) << 7;
+		b = LCD22_COLOR_BLUE (color1) << 7;
+
+		for(x= -radius; x <= radius; x++) {
+			if((x*x + y*y) <= (radius * radius))
+				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
+
+			r += stepr;
+			g += stepg;
+			b += stepb;
+		}
+	}
+}
+
+void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2) {
+	int16_t x, y;
+	int16_t stepr, stepg, stepb;
+	uint16_t r, g, b;
+
+	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
+	 * This gives us the amount we need to add for each pixel to get a linear gradient.
+	 * We shift the color difference by 7 bits for increased precision.
+	 */
+	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
+	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
+	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
+
+	r = LCD22_COLOR_RED  (color1) << 7;
+	g = LCD22_COLOR_GREEN(color1) << 7;
+	b = LCD22_COLOR_BLUE (color1) << 7;
+	for(y= -radius; y <= radius; y++) {
+		for(x= -radius; x <= radius; x++)
+			if((x*x + y*y) <= (radius * radius))
+				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
+
+		r += stepr;
+		g += stepg;
+		b += stepb;
+	}
+}
+
 static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *palette,
                                        int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 

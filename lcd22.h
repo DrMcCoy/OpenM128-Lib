@@ -94,6 +94,10 @@ void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness, uint16_t color);
 /** Draw a filled circle onto the display. */
 void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+/** Draw a circle filled with a horizontal color gradient onto the display. */
+void lcd22_draw_hgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2);
+/** Draw a circle filled with a vertical color gradient onto the display. */
+void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2);
 
 /* Note: The following functions to *not* clip smartly. They only make sure that nothing "outside" of the
  *       visible screen range is overwritten. If part of the destination area lies outside the screen, you
