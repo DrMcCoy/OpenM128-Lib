@@ -257,11 +257,19 @@ static bool lcd22_set_draw_area(int16_t x, int16_t y, int16_t width, int16_t hei
 		// Nothing to do
 		return FALSE;
 
+	*right  = x + width  - 1;
+	*bottom = y + height - 1;
+
+	if (((x < 0) && (*right  < 0)) || ((x >= LCD22_WIDTH ) && (*right  >= LCD22_WIDTH )) ||
+	    ((y < 0) && (*bottom < 0)) || ((y >= LCD22_HEIGHT) && (*bottom >= LCD22_HEIGHT)))
+		// Area lies wholly outside the screen
+		return FALSE;
+
 	// Clamp to valid area
-	*left   = CLIP(x             , 0, LCD22_WIDTH  - 1);
-	*top    = CLIP(y             , 0, LCD22_HEIGHT - 1);
-	*right  = CLIP(x + width  - 1, 0, LCD22_WIDTH  - 1);
-	*bottom = CLIP(y + height - 1, 0, LCD22_HEIGHT - 1);
+	*left   = CLIP(x      , 0, LCD22_WIDTH  - 1);
+	*top    = CLIP(y      , 0, LCD22_HEIGHT - 1);
+	*right  = CLIP(*right , 0, LCD22_WIDTH  - 1);
+	*bottom = CLIP(*bottom, 0, LCD22_HEIGHT - 1);
 
 	if ((*left > *right) || (*top > *bottom))
 		// Nothing to do
