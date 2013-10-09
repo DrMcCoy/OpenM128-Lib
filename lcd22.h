@@ -123,6 +123,14 @@ void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foregroun
 void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
                             uint16_t foreground_color, uint16_t background_color);
 
+/** Draw a monochrome (1 bit per pixel) bitmap held in program space onto the display.
+ *
+ *  This function works the same way as lcd22_draw_bitmap_1bpp(), except that it expects a pointer
+ *  to bitmap memory that lies in program space.
+ */
+void lcd22_draw_bitmap_1bpp_P(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
+                              uint16_t foreground_color, uint16_t background_color);
+
 /** Draw a 16bpp color bitmap onto the display. */
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height);
 

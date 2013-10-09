@@ -25,6 +25,7 @@
 */
 
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 #include <util/delay.h>
 
 #include "lcd22.h"
@@ -32,7 +33,7 @@
 #include "util.h"
 
 // Image data for the lower 128 (7-bit) ASCII characters
-static const uint8_t lcd22_ascii[] = {
+static const uint8_t lcd22_ascii[] PROGMEM  = {
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, // 0x00
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0F,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x00,
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xF8,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x00,
@@ -426,7 +427,7 @@ void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, ui
 	if ((uint8_t)c >= 128)
 		c = 0;
 
-	lcd22_draw_bitmap_1bpp(lcd22_ascii + c * 16, x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, foreground_color, background_color);
+	lcd22_draw_bitmap_1bpp_P(lcd22_ascii + c * 16, x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, foreground_color, background_color);
 }
 
 void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
@@ -721,12 +722,52 @@ static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *pa
 	lcd22_finish_write();
 }
 
+static void lcd22_draw_bitmap_paletted_P(const uint8_t *bitmap, const uint16_t *palette,
+                                         int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
+
+	uint16_t i, j;
+	uint8_t bitPos, p = 0x00;
+
+	int16_t left, top, right, bottom;
+	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
+		return;
+
+	lcd22_prepare_write();
+
+	// Go through each row of the bitmap data, always starting with a new byte
+	for (j = top; j <= bottom; j++) {
+		bitPos = 255;
+
+		for (i = left; i <= right; i++) {
+			// Fetch a new byte if necessary
+			if (bitPos++ >= ((8 / bits) - 1)) {
+				bitPos = 0;
+				p = pgm_read_byte(bitmap++);
+			}
+
+			// Take n bits as an index into the palette and draw the pixel
+			lcd22_write_data(palette[p >> (8 - bits)]);
+			p <<= bits;
+		}
+	}
+
+	lcd22_finish_write();
+}
+
 void lcd22_draw_bitmap_1bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
                             uint16_t foreground_color, uint16_t background_color) {
 
 	const uint16_t palette[2] = {background_color, foreground_color};
 
 	lcd22_draw_bitmap_paletted(bitmap, palette, x, y, width, height, 1);
+}
+
+void lcd22_draw_bitmap_1bpp_P(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height,
+                              uint16_t foreground_color, uint16_t background_color) {
+
+	const uint16_t palette[2] = {background_color, foreground_color};
+
+	lcd22_draw_bitmap_paletted_P(bitmap, palette, x, y, width, height, 1);
 }
 
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
