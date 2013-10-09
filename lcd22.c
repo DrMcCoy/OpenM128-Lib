@@ -504,7 +504,7 @@ void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 	int16_t stepr, stepg, stepb;
 	uint16_t r, g, b;
 	int16_t left, top, right, bottom;
-	
+
 	if (x0 > x1)
 		SWAP(x0, x1);
 	if (y0 > y1)
@@ -527,7 +527,7 @@ void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 		r = LCD22_COLOR_RED  (color1) << 7;
 		g = LCD22_COLOR_GREEN(color1) << 7;
 		b = LCD22_COLOR_BLUE (color1) << 7;
-		
+
 		for (j = left; j <= right; j++) {
 			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 			r += stepr;
@@ -544,7 +544,7 @@ void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 	int16_t stepr, stepg, stepb;
 	uint16_t r, g, b;
 	int16_t left, top, right, bottom;
-	
+
 	if (x0 > x1)
 		SWAP(x0, x1);
 	if (y0 > y1)
@@ -569,7 +569,7 @@ void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 	for (i = top; i <= bottom; i++) {
 		for (j = left; j <= right; j++)
 			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
-		
+
 		r += stepr;
 		g += stepg;
 		b += stepb;
