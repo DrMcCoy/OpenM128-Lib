@@ -38,7 +38,7 @@ typedef enum {
 	kJoystickB = (0x1F & ~0x08), // Joystick pressed towards direction B
 	kJoystickC = (0x1F & ~0x04), // Joystick pressed towards direction C
 	kJoystickD = (0x1F & ~0x02), // Joystick pressed towards direction D
-	
+
 	kJoystickDownA = (0x1F & ~(0x10 | 0x01)), // Joystick pressed down and towards direction A
 	kJoystickDownB = (0x1F & ~(0x08 | 0x01)), // Joystick pressed down and towards direction B
 	kJoystickDownC = (0x1F & ~(0x04 | 0x01)), // Joystick pressed down and towards direction C
