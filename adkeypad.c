@@ -25,12 +25,28 @@
 */
 
 #include "adkeypad.h"
+#include "util.h"
 #include "adc.h"
 
-uint8_t adkeypad_get(uint8_t pin) {
-	return 0xFF;
-}
+#define ADKEYPAD_KEY_COUNT      16
+#define ADKEYPAD_ADC_RESOLUTION 10
 
-uint16_t adkeypad_get_raw(uint8_t pin) {
-	return adc_get_average(pin, kADCReferenceAVCC);
+#define ADKEYPAD_VALUE_PER_KEY ((1 << ADKEYPAD_ADC_RESOLUTION) / ADKEYPAD_KEY_COUNT)
+
+#define ADKEYPAD_ERROR_RANGE 10
+
+uint8_t adkeypad_get(uint8_t pin) {
+	int16_t adc = adc_get_average(pin, kADCReferenceAVCC);
+
+	for (uint8_t i = 0; i < ADKEYPAD_KEY_COUNT; i++) {
+		const int16_t key_value = i * ADKEYPAD_VALUE_PER_KEY;
+
+		if (ABS(key_value - adc) < ADKEYPAD_ERROR_RANGE)
+			return i;
+
+		if  (key_value > adc)
+			break;
+	}
+
+	return 0xFF;
 }

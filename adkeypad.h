@@ -38,6 +38,5 @@
  *  @return The currently pressed key (0-15) or 0xFF if none is pressed.
  */
 uint8_t adkeypad_get(uint8_t pin);
-uint16_t adkeypad_get_raw(uint8_t pin);
 
 #endif /* ADKEYPAD_H_ */
