@@ -55,19 +55,21 @@ void keys_init(uint8_t mask);
 
 /** Return the state of a specific key.
  *
- *  @param   key  The key (0-3) to query.
- *  @returns bool TRUE if the key is pressed down, FALSE if the key is unpressed.
+ *  @param key  The key (0-3) to query.
+ *
+ *  @return TRUE if the key is pressed down, FALSE if the key is unpressed.
  */
 bool keys_get(uint8_t key);
 
 /** Return the state of several keys according to a mask.
  *
- *  @param  mask     A mask to specific which keys to query.
- *                   If bit n (0-3) is set, key n will be queried.
- *                   If bit n (0-3) is not set, key n will be ignored.
- *  @returns uint8_t A bitmask of the states of each keys.
- *                   If key n (0-3) is pressed down (and bit n of mask is set), bit n is 1.
- *                   If key n (0-3) is unpressed (and bit n of mask is set), bit n is 0.
+ *  @param mask A mask to specific which keys to query.
+ *              If bit n (0-3) is set, key n will be queried.
+ *              If bit n (0-3) is not set, key n will be ignored.
+ *
+ *  @return A bitmask of the states of each keys.
+ *          If key n (0-3) is pressed down (and bit n of mask is set), bit n is 1.
+ *          If key n (0-3) is unpressed (and bit n of mask is set), bit n is 0.
  */
 uint8_t keys_get_mask(uint8_t mask);
 
