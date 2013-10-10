@@ -185,7 +185,8 @@ void lcd22_draw_bitmap_8bpp_PP(const uint8_t *bitmap, const uint16_t *palette, i
  *
  *  @param x The x coordinate of the touch position.
  *  @param y The y coordinate of the touch position.
- *  @returns TRUE if the touch screen is currently pressed down, FALSE otherwise.
+ *
+ *  @return TRUE if the touch screen is currently pressed down, FALSE otherwise.
  */
 bool lcd22_get_touch(int16_t *x, int16_t *y);
 
