@@ -55,6 +55,10 @@
 	} while(0)
 #endif
 
+#ifndef ARRAYSIZE
+	#define ARRAYSIZE(x) ((int)(sizeof(x) / sizeof(x[0])))
+#endif
+
 uint32_t sqrt_integer_rounded(uint32_t a_nInput);
 
 #endif /* UTIL_H_ */
