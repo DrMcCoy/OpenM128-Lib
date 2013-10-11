@@ -1,4 +1,4 @@
-/* adkeypad - Reading the keys of the Waveshare AD Keypad
+/* keypadad - Reading the keys of the Waveshare AD Keypad
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
@@ -24,36 +24,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "adkeypad.h"
-#include "util.h"
-#include "adc.h"
+#ifndef KEYPADAD_H_
+#define KEYPADAD_H_
 
-#define ADKEYPAD_KEY_COUNT      16
-#define ADKEYPAD_ADC_RESOLUTION 10
+#include "types.h"
 
-#define ADKEYPAD_VALUE_PER_KEY ((1 << ADKEYPAD_ADC_RESOLUTION) / ADKEYPAD_KEY_COUNT)
+/** Read the state of the AD keypad.
+ *
+ *  Please see the notes in adc.h.
+ *
+ *  @param pin The pin (0-7) of port F the keypad is connected to.
+ *
+ *  @return The currently pressed key (0-15), 0xFF if none is pressed or 0xFE if an invalid state was encountered.
+ */
+uint8_t keypadad_get(uint8_t pin);
 
-// Margin of error for ADC values of a key
-#define ADKEYPAD_ERROR_RANGE 10
-
-uint8_t adkeypad_get(uint8_t pin) {
-	int16_t adc = adc_get_average(pin, kADCReferenceAVCC);
-
-	for (uint8_t i = 0; i < ADKEYPAD_KEY_COUNT; i++) {
-		const int16_t key_value = i * ADKEYPAD_VALUE_PER_KEY;
-
-		if (ABS(key_value - adc) < ADKEYPAD_ERROR_RANGE)
-			return i;
-
-		if  (key_value > adc)
-			// Encountered an ADC value that's not within reasonable margins of error => invalid
-			return 0xFE;
-	}
-
-	if (adc < ((1 << ADKEYPAD_ADC_RESOLUTION) - ADKEYPAD_ERROR_RANGE))
-		// ADC value lies between key15_value + ERROR_RANGE and keyNone_value - ERROR_RANGE => invalid
-		return 0xFE;
-
-	// No key pressed
-	return 0xFF;
-}
+#endif /* KEYPADAD_H_ */
