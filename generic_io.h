@@ -55,7 +55,7 @@ typedef struct {
 } generic_io_t;
 
 /** Create a generic IO on that specific port and pin. */
-void generic_io_create(generic_io_t *gio, port_t port, uint8_t pin);
+generic_io_t generic_io_create(port_t port, uint8_t pin);
 
 /** Make that generic IO an input. */
 void generic_io_make_input(generic_io_t *gio, bool pullup);

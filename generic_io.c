@@ -29,9 +29,11 @@
 #include "generic_io.h"
 
 // Evil macro hackery to save me typing
-#define GENERIC_IO_SET(g, d, o, i)  g->reg_ddr = &d; g->reg_out = &o; g->reg_in = &i;
+#define GENERIC_IO_SET(g, d, o, i)  g.reg_ddr = &d; g.reg_out = &o; g.reg_in = &i;
 #define GENERIC_IO_DEFINE(g, p) case kPort##p: GENERIC_IO_SET(g, DDR##p, PORT##p, PIN##p); break;
-void generic_io_create(generic_io_t *gio, port_t port, uint8_t pin) {
+generic_io_t generic_io_create(port_t port, uint8_t pin) {
+	generic_io_t gio;
+
 	switch (port) {
 		GENERIC_IO_DEFINE(gio, A);
 		GENERIC_IO_DEFINE(gio, B);
@@ -42,7 +44,9 @@ void generic_io_create(generic_io_t *gio, port_t port, uint8_t pin) {
 		GENERIC_IO_DEFINE(gio, G);
 	}
 
-	gio->pin_mask = 1 << pin;
+	gio.pin_mask = 1 << pin;
+
+	return gio;
 }
 
 void generic_io_make_input(generic_io_t *gio, bool pullup) {
