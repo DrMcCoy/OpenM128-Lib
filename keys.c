@@ -65,9 +65,8 @@ bool keys_get(uint8_t key) {
 
 uint8_t keys_get_mask(uint8_t mask) {
 	uint8_t state = 0x00;
-	uint8_t i;
 
-	for (i = 0; i < 4; i++)
+	for (uint8_t i = 0; i < 4; i++)
 		if (mask & (1 << i))
 			state |= keys_get(i) << i;
 
