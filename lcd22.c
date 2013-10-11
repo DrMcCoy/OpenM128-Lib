@@ -926,12 +926,13 @@ static int16_t lcd22_touch_read_adc(uint8_t command) {
 }
 
 // Read ADC value from the touch screen controller several times and return an average (ignoring outliers)
-#define LCD22_TOUCH_AVERAGE_READ   10
-#define LCD22_TOUCH_AVERAGE_IGNORE  4
+#define LCD22_TOUCH_AVERAGE_READ    10
+#define LCD22_TOUCH_AVERAGE_IGNORE   4
+#define LCD22_TOUCH_AVERAGE_USE    (LCD22_TOUCH_AVERAGE_READ - (2*LCD22_TOUCH_AVERAGE_IGNORE))
 static int16_t lcd22_touch_read_adc_average(uint8_t command) {
 	int16_t buf[LCD22_TOUCH_AVERAGE_READ];
 
-	// Read the ADC x times
+	// Read the ADC LCD22_TOUCH_AVERAGE_READ times
 	for (uint8_t i = 0; i < LCD22_TOUCH_AVERAGE_READ; i++)
 		buf[i] = lcd22_touch_read_adc(command);
 
@@ -943,9 +944,9 @@ static int16_t lcd22_touch_read_adc_average(uint8_t command) {
 
 	// Average over the middle values
 	int16_t avg = 0;
-	for (uint8_t i = LCD22_TOUCH_AVERAGE_IGNORE; i < (LCD22_TOUCH_AVERAGE_READ - LCD22_TOUCH_AVERAGE_IGNORE); i++)
-		avg += buf[i];
-	avg /= (LCD22_TOUCH_AVERAGE_READ - 2*LCD22_TOUCH_AVERAGE_IGNORE);
+	for (uint8_t i = 0; i < LCD22_TOUCH_AVERAGE_USE; i++)
+		avg += buf[LCD22_TOUCH_AVERAGE_IGNORE + i];
+	avg /= LCD22_TOUCH_AVERAGE_USE;
 
 	return avg;
 }
