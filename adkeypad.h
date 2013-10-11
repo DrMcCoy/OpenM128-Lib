@@ -35,7 +35,7 @@
  *
  *  @param pin The pin (0-7) of port F the keypad is connected to.
  *
- *  @return The currently pressed key (0-15) or 0xFF if none is pressed.
+ *  @return The currently pressed key (0-15), 0xFF if none is pressed or 0xFE if an invalid state was encountered.
  */
 uint8_t adkeypad_get(uint8_t pin);
 
