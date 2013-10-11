@@ -1,4 +1,4 @@
-/* adkeypad - Reading the keys Waveshare AD Keypad
+/* adkeypad - Reading the keys of the Waveshare AD Keypad
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
@@ -33,6 +33,7 @@
 
 #define ADKEYPAD_VALUE_PER_KEY ((1 << ADKEYPAD_ADC_RESOLUTION) / ADKEYPAD_KEY_COUNT)
 
+// Margin of error for ADC values of a key
 #define ADKEYPAD_ERROR_RANGE 10
 
 uint8_t adkeypad_get(uint8_t pin) {
@@ -45,12 +46,12 @@ uint8_t adkeypad_get(uint8_t pin) {
 			return i;
 
 		if  (key_value > adc)
-			// Encountered an adc value that's not within reasonable margins of error => invalid
+			// Encountered an ADC value that's not within reasonable margins of error => invalid
 			return 0xFE;
 	}
 
 	if (adc < ((1 << ADKEYPAD_ADC_RESOLUTION) - ADKEYPAD_ERROR_RANGE))
-		// adc value lies between key15_value + ERROR_RANGE and keyNone_value - ERROR_RANGE => invalid
+		// ADC value lies between key15_value + ERROR_RANGE and keyNone_value - ERROR_RANGE => invalid
 		return 0xFE;
 
 	// No key pressed

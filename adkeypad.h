@@ -1,4 +1,4 @@
-/* adkeypad - Reading the keys Waveshare AD Keypad
+/* adkeypad - Reading the keys of the Waveshare AD Keypad
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
