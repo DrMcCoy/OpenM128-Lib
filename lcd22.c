@@ -393,30 +393,26 @@ void lcd22_init() {
 }
 
 void lcd22_clear_screen(uint16_t color) {
-	uint16_t i, j;
-
 	lcd22_reset_draw_area();
 
 	lcd22_prepare_write();
 
-	for (i = 0; i < LCD22_HEIGHT; i++)
-		for (j = 0; j < LCD22_WIDTH; j++)
+	for (uint16_t i = 0; i < LCD22_HEIGHT; i++)
+		for (uint16_t j = 0; j < LCD22_WIDTH; j++)
 			lcd22_write_data(color);
 
 	lcd22_finish_write();
 }
 
 void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t color) {
-	int16_t i, j;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = top; i <= bottom; i++)
-		for (j = left; j <= right; j++)
+	for (int16_t i = top; i <= bottom; i++)
+		for (int16_t j = left; j <= right; j++)
 			lcd22_write_data(color);
 
 	lcd22_finish_write();
@@ -531,16 +527,12 @@ void lcd22_draw_filled_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 }
 
 void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2) {
-	int16_t i, j;
-	int16_t stepr, stepg, stepb;
-	uint16_t r, g, b;
-	int16_t left, top, right, bottom;
-
 	if (x0 > x1)
 		SWAP(x0, x1);
 	if (y0 > y1)
 		SWAP(y0, y1);
 
+	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, &left, &top, &right, &bottom))
 		return;
 
@@ -550,16 +542,16 @@ void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 	 * This gives us the amount we need to add for each pixel to get a linear gradient.
 	 * We shift the color difference by 7 bits for increased precision.
 	 */
-	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (right - left);
-	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (right - left);
-	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (right - left);
+	const int16_t stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (right - left);
+	const int16_t stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (right - left);
+	const int16_t stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (right - left);
 
-	for (i = top; i <= bottom; i++) {
-		r = LCD22_COLOR_RED  (color1) << 7;
-		g = LCD22_COLOR_GREEN(color1) << 7;
-		b = LCD22_COLOR_BLUE (color1) << 7;
+	for (int16_t i = top; i <= bottom; i++) {
+		uint16_t r = LCD22_COLOR_RED  (color1) << 7;
+		uint16_t g = LCD22_COLOR_GREEN(color1) << 7;
+		uint16_t b = LCD22_COLOR_BLUE (color1) << 7;
 
-		for (j = left; j <= right; j++) {
+		for (int16_t j = left; j <= right; j++) {
 			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 			r += stepr;
 			g += stepg;
@@ -571,16 +563,12 @@ void lcd22_draw_hgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 }
 
 void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color1, uint16_t color2) {
-	int16_t i, j;
-	int16_t stepr, stepg, stepb;
-	uint16_t r, g, b;
-	int16_t left, top, right, bottom;
-
 	if (x0 > x1)
 		SWAP(x0, x1);
 	if (y0 > y1)
 		SWAP(y0, y1);
 
+	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x0, y0, x1 - x0 + 1, y1 - y0 + 1, &left, &top, &right, &bottom))
 		return;
 
@@ -590,15 +578,15 @@ void lcd22_draw_vgradient_rectangle(int16_t x0, int16_t y0, int16_t x1, int16_t 
 	 * This gives us the amount we need to add for each pixel to get a linear gradient.
 	 * We shift the color difference by 7 bits for increased precision.
 	 */
-	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (bottom - top);
-	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (bottom - top);
-	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (bottom - top);
+	const int16_t stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (bottom - top);
+	const int16_t stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (bottom - top);
+	const int16_t stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (bottom - top);
 
-	r = LCD22_COLOR_RED  (color1) << 7;
-	g = LCD22_COLOR_GREEN(color1) << 7;
-	b = LCD22_COLOR_BLUE (color1) << 7;
-	for (i = top; i <= bottom; i++) {
-		for (j = left; j <= right; j++)
+	uint16_t r = LCD22_COLOR_RED  (color1) << 7;
+	uint16_t g = LCD22_COLOR_GREEN(color1) << 7;
+	uint16_t b = LCD22_COLOR_BLUE (color1) << 7;
+	for (int16_t i = top; i <= bottom; i++) {
+		for (int16_t j = left; j <= right; j++)
 			lcd22_write_data(LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 
 		r += stepr;
@@ -646,33 +634,27 @@ void lcd22_draw_circle(int16_t x0, int16_t y0, int16_t radius, int16_t thickness
 }
 
 void lcd22_draw_filled_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color) {
-	int16_t x, y;
-
-	for (y = -radius; y <= radius; y++)
-		for (x = -radius; x <= radius; x++)
+	for (int16_t y = -radius; y <= radius; y++)
+		for (int16_t x = -radius; x <= radius; x++)
 			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, color);
 }
 
 void lcd22_draw_hgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2) {
-	int16_t x, y;
-	int16_t stepr, stepg, stepb;
-	uint16_t r, g, b;
-
 	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
 	 * This gives us the amount we need to add for each pixel to get a linear gradient.
 	 * We shift the color difference by 7 bits for increased precision.
 	 */
-	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
-	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
-	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
+	const int16_t stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
+	const int16_t stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
+	const int16_t stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
 
-	for (y = -radius; y <= radius; y++) {
-		r = LCD22_COLOR_RED  (color1) << 7;
-		g = LCD22_COLOR_GREEN(color1) << 7;
-		b = LCD22_COLOR_BLUE (color1) << 7;
+	for (int16_t y = -radius; y <= radius; y++) {
+		uint16_t r = LCD22_COLOR_RED  (color1) << 7;
+		uint16_t g = LCD22_COLOR_GREEN(color1) << 7;
+		uint16_t b = LCD22_COLOR_BLUE (color1) << 7;
 
-		for (x = -radius; x <= radius; x++) {
+		for (int16_t x = -radius; x <= radius; x++) {
 			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 
@@ -684,23 +666,19 @@ void lcd22_draw_hgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 }
 
 void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_t color1, uint16_t color2) {
-	int16_t x, y;
-	int16_t stepr, stepg, stepb;
-	uint16_t r, g, b;
-
 	/* Calculate the difference between the two colors and divide by the number of pixels to draw.
 	 * This gives us the amount we need to add for each pixel to get a linear gradient.
 	 * We shift the color difference by 7 bits for increased precision.
 	 */
-	stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
-	stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
-	stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
+	const int16_t stepr = (((int16_t)LCD22_COLOR_RED  (color2) - (int16_t)LCD22_COLOR_RED  (color1)) << 7) / (2 * radius);
+	const int16_t stepg = (((int16_t)LCD22_COLOR_GREEN(color2) - (int16_t)LCD22_COLOR_GREEN(color1)) << 7) / (2 * radius);
+	const int16_t stepb = (((int16_t)LCD22_COLOR_BLUE (color2) - (int16_t)LCD22_COLOR_BLUE (color1)) << 7) / (2 * radius);
 
-	r = LCD22_COLOR_RED  (color1) << 7;
-	g = LCD22_COLOR_GREEN(color1) << 7;
-	b = LCD22_COLOR_BLUE (color1) << 7;
-	for (y = -radius; y <= radius; y++) {
-		for (x = -radius; x <= radius; x++)
+	int16_t r = LCD22_COLOR_RED  (color1) << 7;
+	int16_t g = LCD22_COLOR_GREEN(color1) << 7;
+	int16_t b = LCD22_COLOR_BLUE (color1) << 7;
+	for (int16_t y = -radius; y <= radius; y++) {
+		for (int16_t x = -radius; x <= radius; x++)
 			if (((x * x) + (y * y)) <= (radius * radius))
 				lcd22_draw_dot(x0 + x, y0 + y, 1, LCD22_COLOR(r >> 7, g >> 7, b >> 7));
 
@@ -713,9 +691,6 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
 static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *palette,
                                        int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 
-	uint16_t i, j;
-	uint8_t bitPos, p = 0x00;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
@@ -723,10 +698,10 @@ static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *pa
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (j = top; j <= bottom; j++) {
-		bitPos = 255;
+	for (uint16_t j = top; j <= bottom; j++) {
+		uint8_t bitPos = 255, p = 0x00;
 
-		for (i = left; i <= right; i++) {
+		for (uint16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
@@ -745,9 +720,6 @@ static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *pa
 static void lcd22_draw_bitmap_paletted_P(const uint8_t *bitmap, const uint16_t *palette,
                                          int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 
-	uint16_t i, j;
-	uint8_t bitPos, p = 0x00;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
@@ -755,10 +727,10 @@ static void lcd22_draw_bitmap_paletted_P(const uint8_t *bitmap, const uint16_t *
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (j = top; j <= bottom; j++) {
-		bitPos = 255;
+	for (uint16_t j = top; j <= bottom; j++) {
+		uint8_t bitPos = 255, p = 0x00;
 
-		for (i = left; i <= right; i++) {
+		for (uint16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
@@ -777,9 +749,6 @@ static void lcd22_draw_bitmap_paletted_P(const uint8_t *bitmap, const uint16_t *
 static void lcd22_draw_bitmap_paletted_PP(const uint8_t *bitmap, const uint16_t *palette,
                                           int16_t x, int16_t y, int16_t width, int16_t height, uint8_t bits) {
 
-	uint16_t i, j;
-	uint8_t bitPos, p = 0x00;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
@@ -787,10 +756,10 @@ static void lcd22_draw_bitmap_paletted_PP(const uint8_t *bitmap, const uint16_t 
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (j = top; j <= bottom; j++) {
-		bitPos = 255;
+	for (uint16_t j = top; j <= bottom; j++) {
+		uint8_t bitPos = 255, p = 0x00;
 
-		for (i = left; i <= right; i++) {
+		for (uint16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
@@ -829,48 +798,42 @@ void lcd22_draw_bitmap_1bpp_PP(const uint8_t *bitmap, const uint16_t *palette,
 }
 
 void lcd22_draw_bitmap_16bpp(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
-	int16_t i, j;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = top; i <= bottom; i++)
-		for (j = left; j <= right; j++)
+	for (int16_t i = top; i <= bottom; i++)
+		for (int16_t j = left; j <= right; j++)
 			lcd22_write_data(*bitmap++);
 
 	lcd22_finish_write();
 }
 
 void lcd22_draw_bitmap_16bpp_P(const uint16_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
-	int16_t i, j;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = top; i <= bottom; i++)
-		for (j = left; j <= right; j++)
+	for (int16_t i = top; i <= bottom; i++)
+		for (int16_t j = left; j <= right; j++)
 			lcd22_write_data(pgm_read_word(bitmap++));
 
 	lcd22_finish_write();
 }
 
 void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
-	int16_t i, j;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = top; i <= bottom; i++) {
-		for (j = left; j <= right; j++) {
+	for (int16_t i = top; i <= bottom; i++) {
+		for (int16_t j = left; j <= right; j++) {
 			const uint8_t r = *bitmap++;
 			const uint8_t g = *bitmap++;
 			const uint8_t b = *bitmap++;
@@ -883,16 +846,14 @@ void lcd22_draw_bitmap_24bpp(const uint8_t *bitmap, int16_t x, int16_t y, int16_
 }
 
 void lcd22_draw_bitmap_24bpp_P(const uint8_t *bitmap, int16_t x, int16_t y, int16_t width, int16_t height) {
-	int16_t i, j;
-
 	int16_t left, top, right, bottom;
 	if (!lcd22_set_draw_area(x, y, width, height, &left, &top, &right, &bottom))
 		return;
 
 	lcd22_prepare_write();
 
-	for (i = top; i <= bottom; i++) {
-		for (j = left; j <= right; j++) {
+	for (int16_t i = top; i <= bottom; i++) {
+		for (int16_t j = left; j <= right; j++) {
 			const uint8_t r = pgm_read_byte(bitmap++);
 			const uint8_t g = pgm_read_byte(bitmap++);
 			const uint8_t b = pgm_read_byte(bitmap++);
@@ -949,8 +910,6 @@ void lcd22_draw_bitmap_8bpp_PP(const uint8_t *bitmap, const uint16_t *palette, i
 
 // Read ADC value from the touch screen controller
 static int16_t lcd22_touch_read_adc(uint8_t command) {
-	uint16_t numl, numh;
-
 	LCD22_CS_H();
 	LCD22_TOUCH_CS_L();
 
@@ -958,8 +917,8 @@ static int16_t lcd22_touch_read_adc(uint8_t command) {
 	lcd22_spio_send(command);
 	_delay_us(2);
 
-	numh = lcd22_spio_send(0x00);
-	numl = lcd22_spio_send(0x00);
+	uint16_t numh = lcd22_spio_send(0x00);
+	uint16_t numl = lcd22_spio_send(0x00);
 
 	LCD22_TOUCH_CS_H();
 
@@ -970,22 +929,21 @@ static int16_t lcd22_touch_read_adc(uint8_t command) {
 #define LCD22_TOUCH_AVERAGE_READ   10
 #define LCD22_TOUCH_AVERAGE_IGNORE  4
 static int16_t lcd22_touch_read_adc_average(uint8_t command) {
-	int16_t buf[LCD22_TOUCH_AVERAGE_READ], avg;
-	uint8_t i, j;
+	int16_t buf[LCD22_TOUCH_AVERAGE_READ];
 
 	// Read the ADC x times
-	for (i = 0; i < LCD22_TOUCH_AVERAGE_READ; i++)
+	for (uint8_t i = 0; i < LCD22_TOUCH_AVERAGE_READ; i++)
 		buf[i] = lcd22_touch_read_adc(command);
 
 	// Sort the read ADC values
-	for (i = 0; i < LCD22_TOUCH_AVERAGE_READ-1; i++)
-		for (j = i + 1; j < LCD22_TOUCH_AVERAGE_READ; j++)
+	for (uint8_t i = 0; i < LCD22_TOUCH_AVERAGE_READ-1; i++)
+		for (uint8_t j = i + 1; j < LCD22_TOUCH_AVERAGE_READ; j++)
 			if (buf[i] > buf[j])
 				SWAP(buf[i], buf[j]);
 
 	// Average over the middle values
-	avg = 0;
-	for (i = LCD22_TOUCH_AVERAGE_IGNORE; i < (LCD22_TOUCH_AVERAGE_READ - LCD22_TOUCH_AVERAGE_IGNORE); i++)
+	int16_t avg = 0;
+	for (uint8_t i = LCD22_TOUCH_AVERAGE_IGNORE; i < (LCD22_TOUCH_AVERAGE_READ - LCD22_TOUCH_AVERAGE_IGNORE); i++)
 		avg += buf[i];
 	avg /= (LCD22_TOUCH_AVERAGE_READ - 2*LCD22_TOUCH_AVERAGE_IGNORE);
 
