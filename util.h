@@ -61,4 +61,10 @@
 
 uint32_t sqrt_integer_rounded(uint32_t a_nInput);
 
+/** Pad a string with character c to make it at least length characters long.
+ *
+ *  Make sure str can hold at least length + 1 characters!
+ */
+void pad_string(char *str, unsigned int length, char c);
+
 #endif /* UTIL_H_ */
