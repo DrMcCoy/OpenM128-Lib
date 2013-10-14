@@ -73,7 +73,7 @@ uint8_t generic_io_read_multi(generic_io_t *gio, uint8_t count) {
 	uint8_t value = 0x00;
 
 	for (uint8_t i = 0; i < count; i++)
-		value |= generic_io_read(gio[i]) << (count - i - 1);
+		value |= generic_io_read(gio + i) << i;
 
 	return value;
 }
@@ -98,5 +98,5 @@ void generic_io_write_multi(generic_io_t *gio, uint8_t count, uint8_t value) {
 		return;
 
 	for (uint8_t i = 0; i < count; i++)
-		generic_io_write(gio[i], value & (1 << (count - i - 1)));
+		generic_io_write(gio + i, value & (1 << i));
 }
