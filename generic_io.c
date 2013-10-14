@@ -66,7 +66,7 @@ bool generic_io_read(generic_io_t *gio) {
 	return !!(*gio->reg_in & gio->pin_mask);
 }
 
-uint8_t generic_io_read_multi(generic_io_t **gio, uint8_t count) {
+uint8_t generic_io_read_multi(generic_io_t *gio, uint8_t count) {
 	if (count > 8)
 		return 0x00;
 
@@ -93,7 +93,7 @@ void generic_io_write(generic_io_t *gio, bool value) {
 		generic_io_clear(gio);
 }
 
-void generic_io_write_multi(generic_io_t **gio, uint8_t count, uint8_t value) {
+void generic_io_write_multi(generic_io_t *gio, uint8_t count, uint8_t value) {
 	if (count > 8)
 		return;
 
