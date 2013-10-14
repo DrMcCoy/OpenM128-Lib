@@ -31,23 +31,23 @@
 #include "generic_io.h"
 
 typedef enum {
-	kKeypad4x4KeyNone,
-	kKeypad4x4Key0,
-	kKeypad4x4Key1,
-	kKeypad4x4Key2,
-	kKeypad4x4Key3,
-	kKeypad4x4Key4,
-	kKeypad4x4Key5,
-	kKeypad4x4Key6,
-	kKeypad4x4Key7,
-	kKeypad4x4Key8,
-	kKeypad4x4Key9,
-	kKeypad4x4KeyEnter,
-	kKeypad4x4KeyEscape,
-	kKeypad4x4KeyPower,
-	kKeypad4x4KeyStop,
-	kKeypad4x4KeyGo,
-	kKeypad4x4KeyLock
+	kKeypad4x4KeyNone   = 0xFF,
+	kKeypad4x4Key0      =   13,
+	kKeypad4x4Key1      =    0,
+	kKeypad4x4Key2      =    1,
+	kKeypad4x4Key3      =    2,
+	kKeypad4x4Key4      =    4,
+	kKeypad4x4Key5      =    5,
+	kKeypad4x4Key6      =    6,
+	kKeypad4x4Key7      =    8,
+	kKeypad4x4Key8      =    9,
+	kKeypad4x4Key9      =   10,
+	kKeypad4x4KeyEnter  =   12,
+	kKeypad4x4KeyEscape =   14,
+	kKeypad4x4KeyPower  =   15,
+	kKeypad4x4KeyStop   =    3,
+	kKeypad4x4KeyGo     =    7,
+	kKeypad4x4KeyLock   =   11
 } keypad4x4_key_t;
 
 typedef struct {

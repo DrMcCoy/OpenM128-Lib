@@ -43,8 +43,34 @@ void keypad4x4_init(keypad4x4_t *keypad, generic_io_t k0,
 	keypad->k[5] = k5;
 	keypad->k[6] = k6;
 	keypad->k[7] = k7;
+
+	// The lower 4 pins are output (row selector)
+	generic_io_make_output(&keypad->k[0]);
+	generic_io_make_output(&keypad->k[1]);
+	generic_io_make_output(&keypad->k[2]);
+	generic_io_make_output(&keypad->k[3]);
+
+	// The upper 4 pins are input (column reader) with pull-up
+	generic_io_make_input(&keypad->k[4], TRUE);
+	generic_io_make_input(&keypad->k[5], TRUE);
+	generic_io_make_input(&keypad->k[6], TRUE);
+	generic_io_make_input(&keypad->k[7], TRUE);
 }
 
 keypad4x4_key_t keypad4x4_get(keypad4x4_t *keypad) {
+	const uint8_t row[4]    = {0x0e, 0x0d, 0x0b, 0x07};
+	const uint8_t column[4] = {0x07, 0x0b, 0x0d, 0x0e};
+
+	// Go through all 4 rows and select each one
+	for (uint8_t y = 0; y < 4; y++) {
+		generic_io_write_multi(&keypad->k[0], 4, row[y]);
+
+		// Check which column was activated
+		uint8_t value = generic_io_read_multi(&keypad->k[4], 4);
+		for (uint8_t x = 0; x < 4; x++)
+			if (value == column[x])
+				return (keypad4x4_key_t) (x + y * 4);
+	}
+
 	return kKeypad4x4KeyNone;
 }
