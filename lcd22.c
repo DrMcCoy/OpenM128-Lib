@@ -29,7 +29,6 @@
 #include <util/delay.h>
 
 #include "lcd22.h"
-#include "lcdfont.h"
 
 #include "util.h"
 
@@ -287,48 +286,72 @@ void lcd22_clear_area(int16_t x, int16_t y, int16_t width, int16_t height, uint1
 	lcd22_finish_write();
 }
 
-void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
-	// Make sure we don't print invalid / unsupported characters
-	if ((uint8_t)c >= 128)
-		c = 0;
+void lcd22_draw_char(char c, int16_t x, int16_t y,
+                     uint16_t foreground_color, uint16_t background_color, lcdfont_t font) {
+	uint8_t width, height;
+	const uint8_t *charData = lcdfont_getChar(font, c, &width, &height);
+	if (!charData)
+		return;
 
-	lcd22_draw_bitmap_1bpp_P(lcdfont_8x16regular + c * 16, x, y, LCD22_CHAR_WIDTH, LCD22_CHAR_HEIGHT, foreground_color, background_color);
+	lcd22_draw_bitmap_1bpp_P(charData, x, y, width, height, foreground_color, background_color);
 }
 
-void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
+void lcd22_draw_string(const char *str, int16_t x, int16_t y,
+                       uint16_t foreground_color, uint16_t background_color, lcdfont_t font) {
+
 	/* Draw each character in the string, one after each other.
 	 * If the cursor reaches the right edge of the display, start a new line.
 	 * If the cursor reaches the bottom edge of the display, continue from the top.
 	 */
 
 	while (*str) {
-		lcd22_draw_char(*str++, x, y, foreground_color, background_color);
+		char c = *str++;
 
-		x += LCD22_CHAR_WIDTH;
+		// Draw a blank for invalid characters
+		if ((uint8_t)c >= 128)
+			c = 0;
+
+		lcd22_draw_char(c, x, y, foreground_color, background_color, font);
+
+		uint8_t width, height;
+		lcdfont_getChar(font, c, &width, &height);
+
+		x += width;
 		if (x >= LCD22_WIDTH) {
 			x = 0;
 
-			y += LCD22_CHAR_HEIGHT;
+			y += height;
 			if (y >= LCD22_HEIGHT)
 				y = 0;
 		}
 	}
 }
 
-void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color) {
+void lcd22_draw_string_P(const char *str, int16_t x, int16_t y,
+                         uint16_t foreground_color, uint16_t background_color, lcdfont_t font) {
+
 	/* Draw each character in the string, one after each other.
 	 * If the cursor reaches the right edge of the display, start a new line.
 	 * If the cursor reaches the bottom edge of the display, continue from the top.
 	 */
 
 	while (pgm_read_byte(str)) {
-		lcd22_draw_char(pgm_read_byte(str++), x, y, foreground_color, background_color);
+		char c = pgm_read_byte(str++);
 
-		x += LCD22_CHAR_WIDTH;
+		// Draw a blank for invalid characters
+		if ((uint8_t)c >= 128)
+			c = 0;
+
+		lcd22_draw_char(c, x, y, foreground_color, background_color, font);
+
+		uint8_t width, height;
+		lcdfont_getChar(font, c, &width, &height);
+
+		x += width;
 		if (x >= LCD22_WIDTH) {
 			x = 0;
 
-			y += LCD22_CHAR_HEIGHT;
+			y += height;
 			if (y >= LCD22_HEIGHT)
 				y = 0;
 		}

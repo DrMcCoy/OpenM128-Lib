@@ -28,17 +28,12 @@
 #define LCD22_H_
 
 #include "types.h"
+#include "lcdfont.h"
 
 // Dimensions
 
 #define LCD22_WIDTH  240 // LCD screen width in pixels
 #define LCD22_HEIGHT 320 // LCD screen height in pixels
-
-#define LCD22_CHAR_WIDTH   8 // Width of a character in pixels
-#define LCD22_CHAR_HEIGHT 16 // Height of a character in pixels
-
-#define LCD22_NUM_CHAR_X (LCD22_WIDTH  / LCD22_CHAR_WIDTH ) // Number of characters that fit onto the screen horizontally
-#define LCD22_NUM_CHAR_Y (LCD22_HEIGHT / LCD22_CHAR_HEIGHT) // Number of characters that fit onto the screen vertically
 
 // Colors, RGB565 (5 bit red, 6 bit green, 5 bit blue)
 
@@ -104,12 +99,15 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
  *       will *not* get the part that would be visible, you will get broken images / characters.
  */
 
-/** Draw a 8x16 pixels 7-bit ASCII character on the display. */
-void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-/** Draw a string onto the display. Each character will be 8x16 pixels wide. */
-void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-/** Draw a string held in program memory onto the display. Each character will be 8x16 pixels wide. */
-void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
+/** Draw a 7-bit ASCII character in the specified font on the display. */
+void lcd22_draw_char(char c, int16_t x, int16_t y,
+                     uint16_t foreground_color, uint16_t background_color, lcdfont_t font);
+/** Draw a string in the specified font onto the display. */
+void lcd22_draw_string(const char *str, int16_t x, int16_t y,
+                       uint16_t foreground_color, uint16_t background_color, lcdfont_t font);
+/** Draw a string held in program memory in the specified font onto the display. */
+void lcd22_draw_string_P(const char *str, int16_t x, int16_t y,
+                         uint16_t foreground_color, uint16_t background_color, lcdfont_t font);
 
 /* Note: The following functions exist in up to 3 versions:
  * - Functions that expect both bitmap and palette in RAM
