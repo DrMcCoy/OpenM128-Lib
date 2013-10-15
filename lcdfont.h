@@ -32,10 +32,12 @@
 // Change any of these to 0 to exclude from compiling
 #define LCDFONT_8X16REGULAR 1
 #define LCDFONT_8X16BOLD    1
+#define LCDFONT_8X8REGULAR  1
 
 typedef enum {
 	kLCDFont8x16Regular = 0,
-	kLCDFont8x16Bold    = 1
+	kLCDFont8x16Bold,
+	kLCDFont8x8Regular
 } lcdfont_t;
 
 /** Return the image data of a character in a font, or 0 if the character or the font do not exist. */
