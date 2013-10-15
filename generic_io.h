@@ -29,7 +29,8 @@
  *  be rewired without the need to change the access code.
  *
  *  Of course, this comes with a price: The compiler loses the ability to optimize
- *  port access, and always uses the slow LD/ST instructions.
+ *  port access, and always uses the slow LD/ST instructions. Compared to direct port
+ *  access, this is really slow. You have been warned.
  */
 
 #ifndef GENERIC_IO_H_
