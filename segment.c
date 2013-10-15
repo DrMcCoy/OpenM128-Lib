@@ -94,3 +94,19 @@ void segment_set_hex(segment_t *segment, uint8_t digit, uint8_t hex) {
 void segment_set_colon(segment_t *segment, bool on) {
 	generic_io_write(&segment->pt, !on);
 }
+
+void segment_set_full(segment_t *segment, uint8_t value1, uint8_t value2, uint8_t value3, uint8_t value4, bool colon) {
+	segment_set_state(segment, 0, value1);
+	segment_set_state(segment, 1, value2);
+	segment_set_state(segment, 2, value3);
+	segment_set_state(segment, 3, value4);
+	segment_set_colon(segment, colon);
+}
+
+void segment_set_full_hex(segment_t *segment, uint8_t hex1, uint8_t hex2, uint8_t hex3, uint8_t hex4, bool colon) {
+	segment_set_hex(segment, 0, hex1);
+	segment_set_hex(segment, 1, hex2);
+	segment_set_hex(segment, 2, hex3);
+	segment_set_hex(segment, 3, hex4);
+	segment_set_colon(segment, colon);
+}

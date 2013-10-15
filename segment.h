@@ -69,4 +69,10 @@ void segment_set_hex(segment_t *segment, uint8_t digit, uint8_t hex);
 /** Set the state of the colon segment. */
 void segment_set_colon(segment_t *segment, bool on);
 
+/** Set the state of all digits, left to right. */
+void segment_set_full(segment_t *segment, uint8_t value1, uint8_t value2, uint8_t value3, uint8_t value4, bool colon);
+
+/** Set the state of all digits, left to right, with hex characters. */
+void segment_set_full_hex(segment_t *segment, uint8_t hex1, uint8_t hex2, uint8_t hex3, uint8_t hex4, bool colon);
+
 #endif /* SEGMENT_H_ */
