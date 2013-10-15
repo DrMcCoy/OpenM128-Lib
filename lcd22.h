@@ -104,11 +104,11 @@ void lcd22_draw_vgradient_circle(int16_t x0, int16_t y0, int16_t radius, uint16_
  *       will *not* get the part that would be visible, you will get broken images / characters.
  */
 
-/** Draw an ASCII character on the display. */
+/** Draw a 8x16 pixels 7-bit ASCII character on the display. */
 void lcd22_draw_char(char c, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-/** Draw a string onto the display. */
+/** Draw a string onto the display. Each character will be 8x16 pixels wide. */
 void lcd22_draw_string(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
-/** Draw a string held in program memory onto the display. */
+/** Draw a string held in program memory onto the display. Each character will be 8x16 pixels wide. */
 void lcd22_draw_string_P(const char *str, int16_t x, int16_t y, uint16_t foreground_color, uint16_t background_color);
 
 /* Note: The following functions exist in up to 3 versions:
