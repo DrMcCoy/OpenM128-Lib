@@ -27,6 +27,8 @@
 #ifndef LCD12864ST_H_
 #define LCD12864ST_H_
 
+#include <stdarg.h>
+
 #include "types.h"
 
 #define LCD12864ST_LINES    4
@@ -45,7 +47,12 @@ void lcd12864st_print(uint8_t line, uint8_t column, const char *str);
 /** Print a string held in program memory onto a line (0-3) of the display, starting with the specified column (0-15). */
 void lcd12864st_print_P(uint8_t line, uint8_t column, const char *str);
 
-/** Refresh the display. */
+/** Print a formated string onto the display. See printf() for details. */
+void lcd12864st_printf(uint8_t line, uint8_t column, const char *format, ...);
+
+/** Refresh the whole display. */
 void lcd12864st_refresh();
+/** Refresh just one line. */
+void lcd12864st_refreshLine(uint8_t line);
 
 #endif /* LCD12864ST_H_ */

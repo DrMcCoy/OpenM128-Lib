@@ -35,6 +35,9 @@
 // The buffer holding all character data
 static char lcd12864st_buffer[LCD12864ST_LINES * LCD12864ST_COLUMNS];
 
+// Line to LCD RAM address mapping
+static const char lcd12864st_line_address[LCD12864ST_LINES] = { 0x00, 0x10, 0x08, 0x18 };
+
 
 // -- Internal LCD support functions --
 
@@ -109,6 +112,18 @@ void lcd12864st_print_P(uint8_t line, uint8_t column, const char *str) {
 	memcpy_P(data, str, MIN(LCD12864ST_COLUMNS - column, strlen_P(str)));
 }
 
+void lcd12864st_printf(uint8_t line, uint8_t column, const char *format, ...) {
+	char str[17];
+
+	va_list va;
+
+	va_start(va, format);
+	vsnprintf(str, 17, format, va);
+	va_end(va);
+
+	lcd12864st_print(line, column, str);
+}
+
 void lcd12864st_refresh() {
 	lcd12864st_st7920_send_code(0x02);
 
@@ -121,4 +136,14 @@ void lcd12864st_refresh() {
 	for (uint8_t y = 1; y < LCD12864ST_LINES; y += 2)
 		for (uint8_t x = 0; x < LCD12864ST_COLUMNS; x++)
 			lcd12864st_st7920_send_data(lcd12864st_buffer[y * LCD12864ST_COLUMNS + x]);
+}
+
+void lcd12864st_refreshLine(uint8_t line) {
+	if (line >= LCD12864ST_LINES)
+		return;
+
+	lcd12864st_st7920_send_code(0x80 | lcd12864st_line_address[line]);
+
+	for (uint8_t x = 0; x < LCD12864ST_COLUMNS; x++)
+		lcd12864st_st7920_send_data(lcd12864st_buffer[line * LCD12864ST_COLUMNS + x]);
 }
