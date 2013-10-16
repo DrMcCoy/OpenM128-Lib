@@ -42,13 +42,24 @@ void lcd12864st_clear();
 /** Clear one line (0-3) of the display. */
 void lcd12864st_clearLine(uint8_t line);
 
-/** Print a string onto a line (0-3) of the display, starting with the specified column (0-15). */
-void lcd12864st_print(uint8_t line, uint8_t column, const char *str);
-/** Print a string held in program memory onto a line (0-3) of the display, starting with the specified column (0-15). */
-void lcd12864st_print_P(uint8_t line, uint8_t column, const char *str);
+/** Fill the whole display with a character. */
+void lcd12864st_fill(char c);
+/** Fill a line of the display with a character. */
+void lcd12864st_fillLine(uint8_t line, char c);
+
+/** Print a string onto line y (0-3) of the display, starting with column x (0-15). */
+void lcd12864st_print(uint8_t x, uint8_t y, const char *str);
+/** Print a string held in program memory onto line y (0-3) of the display, starting with column x (0-15). */
+void lcd12864st_print_P(uint8_t x, uint8_t y, const char *str);
+
+/** Print a string onto the display and center it onto the specified line. */
+void lcd12864st_print_centered(uint8_t line, const char *str);
+
+/** Print a string help in memory onto the display and center it onto the specified line. */
+void lcd12864st_print_centered_P(uint8_t line, const char *str);
 
 /** Print a formated string onto the display. See printf() for details. */
-void lcd12864st_printf(uint8_t line, uint8_t column, const char *format, ...);
+void lcd12864st_printf(uint8_t x, uint8_t y, const char *format, ...);
 
 /** Refresh the whole display. */
 void lcd12864st_refresh();

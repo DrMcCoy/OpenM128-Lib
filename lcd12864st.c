@@ -87,32 +87,48 @@ void lcd12864st_init() {
 }
 
 void lcd12864st_clear() {
-	memset(lcd12864st_buffer, ' ', sizeof(lcd12864st_buffer));
+	lcd12864st_fill(' ');
 }
 
 void lcd12864st_clearLine(uint8_t line) {
-	memset(lcd12864st_buffer + line * LCD12864ST_COLUMNS, ' ', LCD12864ST_COLUMNS);
+	lcd12864st_fillLine(line, ' ');
 }
 
-void lcd12864st_print(uint8_t line, uint8_t column, const char *str) {
-	if ((line >= LCD12864ST_LINES) || (column >= LCD12864ST_COLUMNS))
+void lcd12864st_fill(char c) {
+	memset(lcd12864st_buffer, c, sizeof(lcd12864st_buffer));
+}
+
+void lcd12864st_fillLine(uint8_t line, char c) {
+	memset(lcd12864st_buffer + line * LCD12864ST_COLUMNS, c, LCD12864ST_COLUMNS);
+}
+
+void lcd12864st_print(uint8_t x, uint8_t y, const char *str) {
+	if ((y >= LCD12864ST_LINES) || (x >= LCD12864ST_COLUMNS))
 		return;
 
-	char *data = lcd12864st_buffer + line * LCD12864ST_COLUMNS + column;
+	char *data = lcd12864st_buffer + y * LCD12864ST_COLUMNS + x;
 
-	memcpy(data, str, MIN(LCD12864ST_COLUMNS - column, strlen(str)));
+	memcpy(data, str, MIN(LCD12864ST_COLUMNS - x, strlen(str)));
 }
 
-void lcd12864st_print_P(uint8_t line, uint8_t column, const char *str) {
-	if ((line >= LCD12864ST_LINES) || (column >= LCD12864ST_COLUMNS))
+void lcd12864st_print_P(uint8_t x, uint8_t y, const char *str) {
+	if ((y >= LCD12864ST_LINES) || (x >= LCD12864ST_COLUMNS))
 		return;
 
-	char *data = lcd12864st_buffer + line * LCD12864ST_COLUMNS + column;
+	char *data = lcd12864st_buffer + y * LCD12864ST_COLUMNS + x;
 
-	memcpy_P(data, str, MIN(LCD12864ST_COLUMNS - column, strlen_P(str)));
+	memcpy_P(data, str, MIN(LCD12864ST_COLUMNS - x, strlen_P(str)));
 }
 
-void lcd12864st_printf(uint8_t line, uint8_t column, const char *format, ...) {
+void lcd12864st_print_centered(uint8_t line, const char *str) {
+	lcd12864st_print(strlen(str) / 2, line, str);
+}
+
+void lcd12864st_print_centered_P(uint8_t line, const char *str) {
+	lcd12864st_print(strlen_P(str) / 2, line, str);
+}
+
+void lcd12864st_printf(uint8_t x, uint8_t y, const char *format, ...) {
 	char str[17];
 
 	va_list va;
@@ -121,7 +137,7 @@ void lcd12864st_printf(uint8_t line, uint8_t column, const char *format, ...) {
 	vsnprintf(str, 17, format, va);
 	va_end(va);
 
-	lcd12864st_print(line, column, str);
+	lcd12864st_print(x, y, str);
 }
 
 void lcd12864st_refresh() {
