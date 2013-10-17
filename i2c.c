@@ -197,6 +197,9 @@ void i2c_init() {
 	 */
 	TWBR  = 0x0F;
 	TWSR &= 0xFC;
+
+	// Reset the I²C hardware
+	TWCR  = 0x00;
 }
 
 bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
