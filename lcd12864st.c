@@ -121,11 +121,11 @@ void lcd12864st_print_P(uint8_t x, uint8_t y, const char *str) {
 }
 
 void lcd12864st_print_centered(uint8_t line, const char *str) {
-	lcd12864st_print(strlen(str) / 2, line, str);
+	lcd12864st_print((LCD12864ST_COLUMNS - strlen(str)) >> 1, line, str);
 }
 
 void lcd12864st_print_centered_P(uint8_t line, const char *str) {
-	lcd12864st_print(strlen_P(str) / 2, line, str);
+	lcd12864st_print((LCD12864ST_COLUMNS - strlen_P(str)) >> 1, line, str);
 }
 
 void lcd12864st_printf(uint8_t x, uint8_t y, const char *format, ...) {
