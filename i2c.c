@@ -199,7 +199,7 @@ void i2c_init() {
 	TWSR &= 0xFC;
 }
 
-bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data) {
+bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
 	if(!i2c_send_start())
 		return FALSE;
 

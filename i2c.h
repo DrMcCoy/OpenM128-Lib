@@ -33,7 +33,7 @@
 void i2c_init();
 
 /** Write n bytes of data to a memory address of a slave. */
-bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data);
+bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data);
 /** Read n bytes of data from a memory address of a slave. */
 bool i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data);
 
