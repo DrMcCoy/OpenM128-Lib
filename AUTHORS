@@ -1,0 +1,39 @@
+OpenM128-Lib - Useful functions for the Waveshare OpenM128 development board
+
+Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Terminus
+********
+   The 8x16 regular and 8x16 bold fonts found in lcdfont.c is the Terminus 8x16
+   regular and bld fonts (<http://terminus-font.sourceforge.net/>) version 4.38
+   by Dimitar Zhekov <dimitar.zhekov@gmail.com>. The ll2 patch has been applied.
+   The Terminus fonts are licensed under the SIL Open Font License, Version 1.1.
+   The license is included as OFL.TXT, and is also available with a FAQ at
+   <http://scripts.sil.org/OFL>.
+
+8x8 font
+********
+   The 8x8 regular font found in lcdfont.c is the 8x8 font by John Reeves Hall
+   (<http://overcode.yak.net/12>), released as "free to use for any purpose".
