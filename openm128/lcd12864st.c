@@ -28,8 +28,8 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 
-#include "lcd12864st.h"
-#include "util.h"
+#include "openm128/lcd12864st.h"
+#include "openm128/util.h"
 
 
 // The buffer holding all character data

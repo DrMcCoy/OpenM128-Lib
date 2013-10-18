@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "util.h"
+#include "openm128/util.h"
 
 
 /* Square root function using integer math, rounding to the nearest integer.

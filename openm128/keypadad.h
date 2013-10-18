@@ -27,7 +27,7 @@
 #ifndef KEYPADAD_H_
 #define KEYPADAD_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** Read the state of the AD keypad.
  *

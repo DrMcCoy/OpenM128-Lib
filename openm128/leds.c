@@ -26,7 +26,7 @@
 
 #include <avr/io.h>
 
-#include "leds.h"
+#include "openm128/leds.h"
 
 void leds_init(uint8_t mask) {
 	DDRA |= mask; // Set pin direction of each pin in mask to output;

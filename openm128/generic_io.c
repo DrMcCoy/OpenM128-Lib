@@ -26,7 +26,7 @@
 
 #include <avr/io.h>
 
-#include "generic_io.h"
+#include "openm128/generic_io.h"
 
 // Evil macro hackery to save me typing
 #define GENERIC_IO_SET(g, d, o, i)  g.reg_ddr = &d; g.reg_out = &o; g.reg_in = &i;

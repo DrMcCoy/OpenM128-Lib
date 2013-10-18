@@ -27,7 +27,7 @@
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** Type for all states a joystick can be in. */
 typedef enum {

@@ -26,7 +26,7 @@
 
 #include <avr/io.h>
 
-#include "joystick.h"
+#include "openm128/joystick.h"
 
 void joystick_init() {
 	DDRG  &= ~0x1F; // Set joystick pins to input

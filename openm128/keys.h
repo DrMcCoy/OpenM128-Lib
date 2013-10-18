@@ -27,7 +27,7 @@
 #ifndef KEYS_H_
 #define KEYS_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** NOTE: Even though the keys on the OpenM128 boards are labeled "KEY1", "KEY2, "KEY3" and "KEY4",
  *        we start counting at 0.

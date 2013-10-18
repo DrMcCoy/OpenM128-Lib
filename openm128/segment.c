@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "segment.h"
+#include "openm128/segment.h"
 
 void segment_init(segment_t *segment, generic_io_t ct1,
                                       generic_io_t ct2,

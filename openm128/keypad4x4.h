@@ -27,8 +27,8 @@
 #ifndef KEYPAD4X4_H_
 #define KEYPAD4X4_H_
 
-#include "types.h"
-#include "generic_io.h"
+#include "openm128/types.h"
+#include "openm128/generic_io.h"
 
 typedef enum {
 	kKeypad4x4KeyNone   = 0xFF,

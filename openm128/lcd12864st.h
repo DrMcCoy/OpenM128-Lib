@@ -29,7 +29,7 @@
 
 #include <stdarg.h>
 
-#include "types.h"
+#include "openm128/types.h"
 
 #define LCD12864ST_LINES    4
 #define LCD12864ST_COLUMNS 16

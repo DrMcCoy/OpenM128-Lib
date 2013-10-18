@@ -27,7 +27,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "i2c.h"
+#include "openm128/i2c.h"
 
 // -- Internal I²C functions --
 

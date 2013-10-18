@@ -24,9 +24,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "keypadad.h"
-#include "util.h"
-#include "adc.h"
+#include "openm128/keypadad.h"
+#include "openm128/util.h"
+#include "openm128/adc.h"
 
 #define KEYPADAD_KEY_COUNT      16
 #define KEYPADAD_ADC_RESOLUTION 10

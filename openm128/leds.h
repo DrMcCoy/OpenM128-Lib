@@ -27,7 +27,7 @@
 #ifndef LEDS_H_
 #define LEDS_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** Utility macro to convert 8 separate booleans (for each LED) into a LED bitmask. */
 #define LEDS_MASK(LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7) (((LED0) ? 0x01 : 0x00) |\

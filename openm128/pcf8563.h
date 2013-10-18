@@ -27,7 +27,7 @@
 #ifndef PCF8563_H_
 #define PCF8563_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** A timestamp returned by the PCF8563. */
 typedef struct {

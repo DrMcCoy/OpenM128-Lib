@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ds18b20.h"
+#include "openm128/ds18b20.h"
 
 int16_t ds18b20_get(generic_io_t *wire) {
 	onewire_reset(wire);

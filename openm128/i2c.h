@@ -27,7 +27,7 @@
 #ifndef I2C_H_
 #define I2C_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 /** Initialize the I²C in master mode. */
 void i2c_init();

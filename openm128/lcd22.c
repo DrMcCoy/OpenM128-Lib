@@ -28,9 +28,9 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 
-#include "lcd22.h"
+#include "openm128/lcd22.h"
 
-#include "util.h"
+#include "openm128/util.h"
 
 // -- Utility macros --
 

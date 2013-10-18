@@ -36,7 +36,7 @@
 #ifndef GENERIC_IO_H_
 #define GENERIC_IO_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 typedef enum {
 	kPortA,

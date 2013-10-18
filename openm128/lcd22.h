@@ -27,8 +27,8 @@
 #ifndef LCD22_H_
 #define LCD22_H_
 
-#include "types.h"
-#include "lcdfont.h"
+#include "openm128/types.h"
+#include "openm128/lcdfont.h"
 
 // Dimensions
 

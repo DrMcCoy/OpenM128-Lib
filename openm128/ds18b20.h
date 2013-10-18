@@ -27,7 +27,7 @@
 #ifndef DS18B20_H_
 #define DS18B20_IO_H_
 
-#include "generic_io.h"
+#include "openm128/generic_io.h"
 
 /** Read the temperature from the DS18B20 one-wire sensor.
  *

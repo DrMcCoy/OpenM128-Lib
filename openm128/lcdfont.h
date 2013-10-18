@@ -27,7 +27,7 @@
 #ifndef LCDFONT_H_
 #define LCDFONT_H_
 
-#include "types.h"
+#include "openm128/types.h"
 
 // Change any of these to 0 to exclude from compiling
 #define LCDFONT_8X16REGULAR 1

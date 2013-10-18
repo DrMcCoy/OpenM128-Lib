@@ -26,8 +26,8 @@
 
 #include <avr/io.h>
 
-#include "adc.h"
-#include "util.h"
+#include "openm128/adc.h"
+#include "openm128/util.h"
 
 #ifndef F_CPU
 	#error F_CPU needs to be defined for the AD Keypad to work

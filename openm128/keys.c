@@ -26,7 +26,7 @@
 
 #include <avr/io.h>
 
-#include "keys.h"
+#include "openm128/keys.h"
 
 void keys_init(uint8_t mask) {
 	if (mask & 0x01) {

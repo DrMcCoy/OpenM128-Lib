@@ -26,7 +26,7 @@
 
 #include <util/delay.h>
 
-#include "onewire.h"
+#include "openm128/onewire.h"
 
 void onewire_reset(generic_io_t *wire) {
 	generic_io_make_output(wire);

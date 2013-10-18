@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "keypad4x4.h"
+#include "openm128/keypad4x4.h"
 
 void keypad4x4_init(keypad4x4_t *keypad, generic_io_t k0,
                                          generic_io_t k1,

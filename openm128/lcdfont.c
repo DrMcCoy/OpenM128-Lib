@@ -26,7 +26,7 @@
 
 #include <avr/pgmspace.h>
 
-#include "lcdfont.h"
+#include "openm128/lcdfont.h"
 
 #if LCDFONT_8X16REGULAR == 1
 /** This is the Terminus 8x16 regular font (<http://terminus-font.sourceforge.net/>) version 4.38 by

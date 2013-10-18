@@ -29,8 +29,8 @@
 
 #include <util/delay.h>
 
-#include "pcf8563.h"
-#include "i2c.h"
+#include "openm128/pcf8563.h"
+#include "openm128/i2c.h"
 
 #define fromBCD(x) ( (((x) >> 4) * 10 ) + ((x) % 16) )
 #define toBCD(x)   ( (((x) / 10) << 4 ) + ((x) % 10) )

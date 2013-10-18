@@ -32,7 +32,7 @@
 #ifndef SEGMENT_H_
 #define SEGMENT_H_
 
-#include "generic_io.h"
+#include "openm128/generic_io.h"
 
 typedef struct {
 	generic_io_t ct[4];

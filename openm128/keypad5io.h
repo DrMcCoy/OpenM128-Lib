@@ -27,8 +27,8 @@
 #ifndef KEYPAD5IO_H_
 #define KEYPAD5IO_H_
 
-#include "types.h"
-#include "generic_io.h"
+#include "openm128/types.h"
+#include "openm128/generic_io.h"
 
 typedef enum {
 	kKeypad5ioKeyNone,

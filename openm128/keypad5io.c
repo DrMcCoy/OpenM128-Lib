@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "keypad5io.h"
+#include "openm128/keypad5io.h"
 
 void keypad5io_init(keypad5io_t *keypad, generic_io_t io1,
                                          generic_io_t io2,
