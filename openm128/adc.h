@@ -44,6 +44,8 @@
 #ifndef ADC_H_
 #define ADC_H_
 
+#include "openm128/types.h"
+
 /** The source of the reference voltage used by the ADC. */
 typedef enum {
 	kADCReferenceAREF = 0x00, ///< The ADC uses the AREF pin as its reference.

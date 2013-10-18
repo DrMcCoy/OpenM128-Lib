@@ -27,6 +27,7 @@
 #ifndef ONEWIRE_H_
 #define ONEWIRE_IO_H_
 
+#include "openm128/types.h"
 #include "openm128/generic_io.h"
 
 void onewire_reset(generic_io_t *wire);
