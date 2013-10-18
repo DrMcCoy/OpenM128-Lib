@@ -1,4 +1,4 @@
-/* i2c - Communication using the I²C interface
+/* i2c - Communication using the IÂ²C interface
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
@@ -29,7 +29,7 @@
 
 #include "openm128/i2c.h"
 
-// -- Internal I²C functions --
+// -- Internal IÂ²C functions --
 
 #define SLAVE_ADDRESS_WRITE(x)  ((x) << 1)
 #define SLAVE_ADDRESS_READ(x)  (((x) << 1) | 1)
@@ -186,7 +186,7 @@ static bool i2c_receive_byte(uint8_t *data, bool ack) {
 	return ack ? i2c_receive_byte_ack(data) : i2c_receive_byte_nack(data);
 }
 
-// -- Public I²C functions --
+// -- Public IÂ²C functions --
 
 void i2c_init() {
 	/** Set the bit-rate and clock prescaler.
@@ -198,7 +198,7 @@ void i2c_init() {
 	TWBR  = 0x0F;
 	TWSR &= 0xFC;
 
-	// Reset the I²C hardware
+	// Reset the IÂ²C hardware
 	TWCR  = 0x00;
 }
 

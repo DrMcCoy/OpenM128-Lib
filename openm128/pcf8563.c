@@ -1,4 +1,4 @@
-/* pcf8563 - Reading the PCF8563 real-time clock (RTC) using I²C
+/* pcf8563 - Reading the PCF8563 real-time clock (RTC) using IÂ²C
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
@@ -196,7 +196,7 @@ pcf8563_time_t pcf8563_time_compile() {
 	return time;
 }
 
-/** Claus Tøndering's algorithm.
+/** Claus TÃ¸ndering's algorithm.
  *  See https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#T.C3.B8ndering.27s_algorithm
  *  for specifics.
  */

@@ -56,7 +56,7 @@ typedef enum {
 /** Read a value from the ADC channel.
  *
  *  Conversion will take 38 ADC clock cycles. The ADC clock will be between 50kHz and 200kHz
- *  (depending on the AVR clock), so conversion will take between 19µs and 76µs, not taking
+ *  (depending on the AVR clock), so conversion will take between 19Âµs and 76Âµs, not taking
  *  calling overhead into account.
  *
  *  @param channel   The channel (0-7) to sample. Channel x corresponds to pin x on port F.

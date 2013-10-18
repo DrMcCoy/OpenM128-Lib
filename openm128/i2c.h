@@ -1,4 +1,4 @@
-/* i2c - Communication using the I²C interface
+/* i2c - Communication using the IÂ²C interface
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
@@ -29,7 +29,7 @@
 
 #include "openm128/types.h"
 
-/** Initialize the I²C in master mode. */
+/** Initialize the IÂ²C in master mode. */
 void i2c_init();
 
 /** Write n bytes of data to a memory address of a slave. */

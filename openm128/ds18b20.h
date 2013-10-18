@@ -34,8 +34,8 @@
  *
  *  @param wire The wire the sensor is connected to.
  *  @return The temperature in 1/100 degrees celsius.
- *          Example:  17.42°C ->  1742
- *                   -23.55°C -> -2355
+ *          Example:  17.42Â°C ->  1742
+ *                   -23.55Â°C -> -2355
  */
 int16_t ds18b20_get(generic_io_t *wire);
 

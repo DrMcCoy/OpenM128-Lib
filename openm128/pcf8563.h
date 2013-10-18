@@ -1,4 +1,4 @@
-/* pcf8563 - Reading the PCF8563 real-time clock (RTC) using I²C
+/* pcf8563 - Reading the PCF8563 real-time clock (RTC) using IÂ²C
  *
  * Copyright (c) 2013, Sven Hesse <drmccoy@drmccoy.de>
  * All rights reserved.
