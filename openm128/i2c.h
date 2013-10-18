@@ -24,6 +24,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file i2c.h
+ *  For some reason, avr-gcc 4.5.1 breaks I²C communication with compiling with -O3.
+ *  If you get weird errors, try reducing optimization to -O2.
+ */
+
 #ifndef I2C_H_
 #define I2C_H_
 
