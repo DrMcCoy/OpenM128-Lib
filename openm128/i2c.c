@@ -240,7 +240,7 @@ bool i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t 
 	if(!i2c_send_restart())
 		return FALSE;
 
-	if(!i2c_send_read_address8(SLAVE_ADDRESS_READ(slave_address)))
+	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address)))
 		return FALSE;
 
 	while (n-- > 0)
