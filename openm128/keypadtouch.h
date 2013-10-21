@@ -38,6 +38,8 @@ typedef struct {
 	bool key1; ///< Is Key 1 active?
 	bool key2; ///< Is Key 2 active?
 	bool key3; ///< Is Key 3 active?
+
+	uint8_t slider; ///< The value of the slider surface, from 0 to 9.
 } keypadtouch_state_t;
 
 /** Initialize and calibrate the capacitive touch keypad. */

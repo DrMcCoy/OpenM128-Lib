@@ -36,6 +36,8 @@
  * Then, we set the LOAD line to low, letting the capacitor decharge.
  * We count the time it takes the capacitor to empty enough for the input line to read low.
  * If a finger is resting on the surface, the decharge time will be longer.
+ *
+ * To improve accuracy, a hardware timer could be used to count the decharge time.
  */
 #define KEYPADTOUCH_READ(p, n, d) \
 {\
@@ -49,23 +51,24 @@
 }
 
 static void keypadtouch_read(uint16_t *data) {
-	KEYPADTOUCH_READ(A, 5, data[0]);
+	KEYPADTOUCH_READ(A, 3, data[0]);
 	KEYPADTOUCH_READ(A, 4, data[1]);
-	KEYPADTOUCH_READ(A, 3, data[2]);
-	KEYPADTOUCH_READ(C, 1, data[3]);
-	KEYPADTOUCH_READ(C, 2, data[4]);
+	KEYPADTOUCH_READ(A, 5, data[2]);
+	KEYPADTOUCH_READ(C, 5, data[3]);
+	KEYPADTOUCH_READ(C, 4, data[4]);
 	KEYPADTOUCH_READ(C, 3, data[5]);
-	KEYPADTOUCH_READ(C, 4, data[6]);
-	KEYPADTOUCH_READ(C, 5, data[7]);
+	KEYPADTOUCH_READ(C, 2, data[6]);
+	KEYPADTOUCH_READ(C, 1, data[7]);
 }
 
 
-
 void keypadtouch_init(keypadtouch_t *keypad) {
+	// The key and wheel lines are input, load and shield output
 	DDRA  = 0x06;
-	PORTA = 0x04;
-
 	DDRC  = 0x01;
+
+	// Set the two shield output lines to high
+	PORTA = 0x04;
 	PORTC = 0x01;
 
 	keypadtouch_recalibrate(keypad);
@@ -75,16 +78,38 @@ void keypadtouch_recalibrate(keypadtouch_t *keypad) {
 	keypadtouch_read(keypad->zero);
 }
 
-#define KEYPADTOUCH_ERROR_RANGE 3
+#define KEYPADTOUCH_ERROR_RANGE 1
+#define KEYPADTOUCH_SURFACE_ACTIVE(x) ((data[(x)] > (keypad->zero[(x)] + KEYPADTOUCH_ERROR_RANGE)))
 keypadtouch_state_t keypadtouch_get(keypadtouch_t *keypad) {
 	uint16_t data[8];
 	keypadtouch_read(data);
 
 	keypadtouch_state_t state;
 
-	state.key1 = data[0] > (keypad->zero[0] + KEYPADTOUCH_ERROR_RANGE);
-	state.key2 = data[1] > (keypad->zero[1] + KEYPADTOUCH_ERROR_RANGE);
-	state.key3 = data[2] > (keypad->zero[2] + KEYPADTOUCH_ERROR_RANGE);
+	state.key1 = KEYPADTOUCH_SURFACE_ACTIVE(0);
+	state.key2 = KEYPADTOUCH_SURFACE_ACTIVE(1);
+	state.key3 = KEYPADTOUCH_SURFACE_ACTIVE(2);
+
+	/* Detect the slider value. Valid states are:
+	 * - On no slider surface
+	 * - Directly on one slider surface
+	 * - Between two surfaces
+	 */
+	state.slider = 0;
+	for (uint8_t i = 0; i < 5; i++) {
+		// Find the lowest surface we're on
+		if (KEYPADTOUCH_SURFACE_ACTIVE(3 + i)) {
+			state.slider = 2 * i + 1;
+
+		// Offset for every next surface we're on as well.
+		// This counts being on three surfaces as being on the middle surface.
+		for (uint8_t j = i + 1; j < 5; j++)
+			if (KEYPADTOUCH_SURFACE_ACTIVE(3 + j))
+				state.slider++;
+
+			break;
+		}
+	}
 
 	return state;
 }
