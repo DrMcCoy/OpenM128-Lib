@@ -34,20 +34,22 @@
 #define SLAVE_ADDRESS_WRITE(x)  ((x) << 1)
 #define SLAVE_ADDRESS_READ(x)  (((x) << 1) | 1)
 
-#define I2C_ACK_START          0x08
-#define I2C_ACK_RESTART        0x10
+#define I2C_STATUS_BUS_ERROR      0x00
 
-#define I2C_ACK_MT_SLA_ACK     0x18
-#define I2C_ACK_MT_SLA_NACK    0x20
-#define I2C_ACK_MT_DATA_ACK    0x28
-#define I2C_ACK_MT_DATA_NACK   0x30
-#define I2C_ACK_MT_ARB_LOST    0x38
+#define I2C_STATUS_START          0x08
+#define I2C_STATUS_RESTART        0x10
 
-#define I2C_ACK_MR_SLA_ACK    0x40
-#define I2C_ACK_MR_SLA_NACK   0x48
-#define I2C_ACK_MR_DATA_ACK   0x50
-#define I2C_ACK_MR_DATA_NACK  0x58
-#define I2C_ACK_MR_ARB_LOST   0x38
+#define I2C_STATUS_MT_SLA_ACK     0x18
+#define I2C_STATUS_MT_SLA_NACK    0x20
+#define I2C_STATUS_MT_DATA_ACK    0x28
+#define I2C_STATUS_MT_DATA_NACK   0x30
+#define I2C_STATUS_MT_ARB_LOST    0x38
+
+#define I2C_STATUS_MR_SLA_ACK     0x40
+#define I2C_STATUS_MR_SLA_NACK    0x48
+#define I2C_STATUS_MR_DATA_ACK    0x50
+#define I2C_STATUS_MR_DATA_NACK   0x58
+#define I2C_STATUS_MR_ARB_LOST    0x38
 
 // Lowest-level register fiddling
 
@@ -59,6 +61,11 @@ static void i2c_set_start() {
 // Signal transmission end
 static void i2c_set_stop() {
 	TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
+}
+
+// Completely reset the I²C interface
+static void i2c_set_reset() {
+	TWCR = (1 << TWINT);
 }
 
 // This byte will be sent
@@ -78,12 +85,12 @@ static void i2c_get_byte_nack() {
 }
 
 // Did we get a (N)ACK?
-static bool i2c_has_ack() {
+static bool i2c_has_status() {
 	return TWCR & (1 << TWINT);
 }
 
 // Return the (N)ACK state
-static uint8_t i2c_get_ack() {
+static uint8_t i2c_get_status() {
 	return TWSR & 0xF8;
 }
 
@@ -92,22 +99,29 @@ static uint8_t i2c_get_ack() {
 // Signal a transmission start and check if it went through
 static bool i2c_send_start() {
 	i2c_set_start();
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	return (i2c_get_ack() == I2C_ACK_START);
+	return (i2c_get_status() == I2C_STATUS_START);
 }
 
 // Signal a transmission restart and check if it went through
 static bool i2c_send_restart() {
 	i2c_set_start();
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	return (i2c_get_ack() == I2C_ACK_RESTART);
+	return (i2c_get_status() == I2C_STATUS_RESTART);
 }
 
 // Signal a transmission stop
 static bool i2c_send_stop() {
 	i2c_set_stop();
+
+	/* Reset the I²C hardware too, for good measure.
+	   Yes, that's not really the nicest and cleanest way to go about it,
+	   but it makes sure the bus is always in a well-defined state after we
+	   stopped transmitting.
+	*/
+	i2c_set_reset();
 
 	// We're the master, this can't fail.
 	return TRUE;
@@ -116,17 +130,17 @@ static bool i2c_send_stop() {
 // Send a 8-bit slave address for writing
 static bool i2c_send_write_address8(uint8_t address) {
 	i2c_set_byte(address);
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	return (i2c_get_ack() == I2C_ACK_MT_SLA_ACK);
+	return (i2c_get_status() == I2C_STATUS_MT_SLA_ACK);
 }
 
 // Send a 8-bit slave address for reading
 static bool i2c_send_read_address8(uint8_t address) {
 	i2c_set_byte(address);
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	return (i2c_get_ack() == I2C_ACK_MR_SLA_ACK);
+	return (i2c_get_status() == I2C_STATUS_MR_SLA_ACK);
 }
 
 // Send a 16-bit slave address for writing
@@ -150,9 +164,9 @@ static bool i2c_send_read_address16(uint16_t address) {
 // Send a byte of data to a slave
 static bool i2c_send_data(uint8_t data) {
 	i2c_set_byte(data);
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	return (i2c_get_ack() == I2C_ACK_MT_DATA_ACK);
+	return (i2c_get_status() == I2C_STATUS_MT_DATA_ACK);
 }
 
 // Higher-level receiving
@@ -160,9 +174,9 @@ static bool i2c_send_data(uint8_t data) {
 // Read a byte of data from the slave and ACK it
 static bool i2c_receive_byte_ack(uint8_t *data) {
 	i2c_get_byte_ack();
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	if (i2c_get_ack() != I2C_ACK_MR_DATA_ACK)
+	if (i2c_get_status() != I2C_STATUS_MR_DATA_ACK)
 		return FALSE;
 
 	*data = TWDR;
@@ -172,9 +186,9 @@ static bool i2c_receive_byte_ack(uint8_t *data) {
 // Read a byte of data from the slave and NACK it
 static bool i2c_receive_byte_nack(uint8_t *data) {
 	i2c_get_byte_nack();
-	while (!i2c_has_ack());
+	while (!i2c_has_status());
 
-	if (i2c_get_ack() != I2C_ACK_MR_DATA_NACK)
+	if (i2c_get_status() != I2C_STATUS_MR_DATA_NACK)
 		return FALSE;
 
 	*data = TWDR;
@@ -198,8 +212,7 @@ void i2c_init() {
 	TWBR  = 0x0F;
 	TWSR &= 0xFC;
 
-	// Reset the I²C hardware
-	TWCR  = 0x00;
+	i2c_set_reset();
 }
 
 bool i2c_poll(uint16_t slave_address, bool write) {
@@ -219,18 +232,26 @@ bool i2c_poll(uint16_t slave_address, bool write) {
 }
 
 bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
-	if(!i2c_send_start())
+	if(!i2c_send_start()) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address)))
+	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_data(data_address))
+	if(!i2c_send_data(data_address)) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
 	while (n-- > 0)
-		if(!i2c_send_data(*data++))
+		if(!i2c_send_data(*data++)) {
+			i2c_send_stop();
 			return FALSE;
+		}
 
 	i2c_send_stop();
 	return TRUE;
@@ -244,24 +265,36 @@ bool i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t 
 	if (n == 0)
 		return TRUE;
 
-	if(!i2c_send_start())
+	if(!i2c_send_start()) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address)))
+	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_data(data_address))
+	if(!i2c_send_data(data_address)) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_restart())
+	if(!i2c_send_restart()) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
-	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address)))
+	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address))) {
+		i2c_send_stop();
 		return FALSE;
+	}
 
 	while (n-- > 0)
-		if(!i2c_receive_byte(data++, n != 0))
+		if(!i2c_receive_byte(data++, n != 0)) {
+			i2c_send_stop();
 			return FALSE;
+		}
 
 	i2c_send_stop();
 	return TRUE;
