@@ -202,6 +202,22 @@ void i2c_init() {
 	TWCR  = 0x00;
 }
 
+bool i2c_poll(uint16_t slave_address, bool write) {
+	if (!i2c_send_start()) {
+		i2c_send_stop();
+		return FALSE;
+	}
+
+	bool result;
+	if (write)
+		result = i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address));
+	else
+		result = i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address));
+
+	i2c_send_stop();
+	return result;
+}
+
 bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
 	if(!i2c_send_start())
 		return FALSE;
