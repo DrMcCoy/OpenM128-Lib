@@ -25,6 +25,7 @@
  */
 
 #include "openm128/ds18b20.h"
+#include "openm128/onewire.h"
 
 int16_t ds18b20_get(generic_io_t *wire) {
 	onewire_reset(wire);
