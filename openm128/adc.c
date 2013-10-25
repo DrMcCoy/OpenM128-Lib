@@ -24,6 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdlib.h>
 #include <avr/io.h>
 
 #include "openm128/adc.h"
@@ -110,4 +111,8 @@ uint16_t adc_get_average(uint8_t pin, adc_reference_t reference) {
 	avg /= ADC_AVERAGE_USE;
 
 	return avg;
+}
+
+void adc_srand(uint8_t channel) {
+	srand(adc_get(channel, kADCReference256V));
 }

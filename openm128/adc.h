@@ -74,4 +74,10 @@ uint16_t adc_get(uint8_t channel, adc_reference_t reference);
  */
 uint16_t adc_get_average(uint8_t channel, adc_reference_t reference);
 
+/** Seed the pseudo-random number generator (PRNG) from the ADC channel.
+ *
+ *  An unconnected ADC pin should be random enough to seed the PRNG in a satisfying manner.
+ */
+void adc_srand(uint8_t channel);
+
 #endif /* ADC_H_ */
