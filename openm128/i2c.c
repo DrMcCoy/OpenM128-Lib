@@ -121,6 +121,7 @@ static bool i2c_send_stop() {
 	   but it makes sure the bus is always in a well-defined state after we
 	   stopped transmitting.
 	*/
+	_delay_us(10);
 	i2c_set_reset();
 
 	// We're the master, this can't fail.
