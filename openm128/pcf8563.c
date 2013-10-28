@@ -72,7 +72,7 @@ void pcf8563_init_wait() {
 
 bool pcf8563_has_valid_time() {
 	uint8_t data;
-	if (!i2c_read(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 1, &data))
+	if (i2c_read(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 1, &data) != 1)
 		return FALSE;
 
 	return !(data & 0x80);
@@ -80,7 +80,7 @@ bool pcf8563_has_valid_time() {
 
 bool pcf8563_get(pcf8563_time_t *time) {
 	uint8_t data[7];
-	if (!i2c_read(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 7, data))
+	if (i2c_read(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 7, data) != 7)
 		return FALSE;
 
 	time->integrity = !(data[0] & 0x80);
@@ -112,7 +112,7 @@ bool pcf8563_set(pcf8563_time_t time) {
 	data[5] = toBCD(time.month) | ((time.year > 1999) ? 0x80 : 0x00);
 	data[6] = toBCD(time.year % 100);
 
-	return i2c_write(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 7, data);
+	return i2c_write(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 7, data) == 7;
 }
 
 bool pcf8563_reset() {
