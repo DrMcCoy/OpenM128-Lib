@@ -235,71 +235,76 @@ bool i2c_poll(uint16_t slave_address, i2c_poll_t type) {
 	return result;
 }
 
-bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
+uint16_t i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
 	if(!i2c_send_start()) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_data(data_address)) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
-	while (n-- > 0)
-		if(!i2c_send_data(*data++)) {
-			i2c_send_stop();
-			return FALSE;
-		}
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_send_data(*data++))
+			break;
+
+		processed++;
+	}
 
 	i2c_send_stop();
-	return TRUE;
+	return processed;
 }
 
 bool i2c_write_byte(uint16_t slave_address, uint8_t data_address, uint8_t data) {
-	return i2c_write(slave_address, data_address, 1, &data);
+	return i2c_write(slave_address, data_address, 1, &data) == 1;
 }
 
-bool i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data) {
+uint16_t i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data) {
 	if (n == 0)
-		return TRUE;
+		return 0;
 
 	if(!i2c_send_start()) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_data(data_address)) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_restart()) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
 	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address))) {
 		i2c_send_stop();
-		return FALSE;
+		return 0;
 	}
 
-	while (n-- > 0)
-		if(!i2c_receive_byte(data++, n != 0)) {
-			i2c_send_stop();
-			return FALSE;
-		}
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_receive_byte(data++, n != 0))
+			break;
+
+		processed++;
+	}
+
 
 	i2c_send_stop();
-	return TRUE;
+	return processed;
 }
