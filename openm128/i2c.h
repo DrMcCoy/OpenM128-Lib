@@ -34,16 +34,25 @@
 
 #include "openm128/types.h"
 
+/** An operation to poll for. */
+typedef enum {
+	kI2CPollRead,
+	kI2CPollWrite,
+	kI2CPollReadWrite
+} i2c_poll_t;
+
+
 /** Initialize the I²C in master mode. */
 void i2c_init();
 
 /** Poll a slave.
  *
  *  @param slave_address The address of the slave to poll.
- *  @param write TRUE if polling for writing, FALSE if polling for reading.
+ *  @param type          The type of the operation to poll for.
+ *
  *  @return TRUE if the slave acknowledged the request.
  */
-bool i2c_poll(uint16_t slave_address, bool write);
+bool i2c_poll(uint16_t slave_address, i2c_poll_t type);
 
 /** Write n bytes of data to a memory address of a slave. */
 bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data);

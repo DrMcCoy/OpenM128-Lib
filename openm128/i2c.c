@@ -216,14 +216,17 @@ void i2c_init() {
 	i2c_set_reset();
 }
 
-bool i2c_poll(uint16_t slave_address, bool write) {
+bool i2c_poll(uint16_t slave_address, i2c_poll_t type) {
+	if (type == kI2CPollReadWrite)
+		return i2c_poll(slave_address, kI2CPollRead) && i2c_poll(slave_address, kI2CPollWrite);
+
 	if (!i2c_send_start()) {
 		i2c_send_stop();
 		return FALSE;
 	}
 
 	bool result;
-	if (write)
+	if (type == kI2CPollWrite)
 		result = i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address));
 	else
 		result = i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address));
