@@ -91,7 +91,7 @@ uint16_t at24cxx_read(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t addres
 
 	uint16_t processed = 0;
 	while (n-- > 0) {
-		if (!at24cxx_poll_wait(kAT24C04, address, FALSE))
+		if (!at24cxx_poll_wait(at24cxx, device_id, kI2CPollRead))
 			break;
 		if (!at24cxx_read_byte(at24cxx, device_id, address++, data++))
 			break;
@@ -108,7 +108,7 @@ uint16_t at24cxx_write(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t addre
 
 	uint16_t processed = 0;
 	while (n-- > 0) {
-		if (!at24cxx_poll_wait(kAT24C04, address, TRUE))
+		if (!at24cxx_poll_wait(at24cxx, device_id, kI2CPollWrite))
 			break;
 		if (!at24cxx_write_byte(at24cxx, device_id, address++, *data++))
 			break;
