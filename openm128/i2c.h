@@ -54,12 +54,36 @@ void i2c_init();
  */
 bool i2c_poll(uint16_t slave_address, i2c_poll_t type);
 
-/** Write n bytes of data to a memory address of a slave. */
+/** Write n bytes of data to a memory address of a slave.
+ *
+ *  @param slave_address The address of the slave to write to.
+ *  @param data_address  The memory address within the slave to write to.
+ *  @param n             The number of bytes to write.
+ *  @param data          The data to write.
+ *
+ *  @return TRUE if all bytes were successfully written.
+ */
 bool i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data);
-/** Read n bytes of data from a memory address of a slave. */
+
+/** Read n bytes of data from a memory address of a slave.
+ *
+ *  @param slave_address The address of the slave to read from.
+ *  @param data_address  The memory address within the slave to read from.
+ *  @param n             The number of bytes to read.
+ *  @param data          The read data will be stored here.
+ *
+ *  @return TRUE if all bytes were successfully read.
+ */
 bool i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data);
 
-/** Write one byte to a memory address of a slave. */
+/** Write one bytes of data to a memory address of a slave.
+ *
+ *  @param slave_address The address of the slave to write to.
+ *  @param data_address  The memory address within the slave to write to.
+ *  @param data          The data to write.
+ *
+ *  @return TRUE if the byte was successfully written.
+ */
 bool i2c_write_byte(uint16_t slave_address, uint8_t data_address, uint8_t data);
 
 #endif /* I2C_H_ */
