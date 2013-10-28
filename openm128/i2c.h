@@ -54,6 +54,15 @@ void i2c_init(void);
  */
 bool i2c_poll(uint16_t slave_address, i2c_poll_t type);
 
+/** Send a command to a slave.
+ *
+ *  @param slave_address The address of the slave to send the command to.
+ *  @param command       The command to send.
+ *
+ *  @return TRUE if the command was successfully sent.
+ */
+bool i2c_send_command(uint16_t slave_address, uint8_t command);
+
 /** Write n bytes of data to a memory address of a slave.
  *
  *  @param slave_address The address of the slave to write to.
