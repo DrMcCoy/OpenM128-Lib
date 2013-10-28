@@ -47,9 +47,9 @@ typedef enum {
 } joystick_state_t;
 
 /** Initialize the joystick on the OpenM128 board. */
-void joystick_init();
+void joystick_init(void);
 
 /** Read the state of the joystick on the OpenM128 board. */
-joystick_state_t joystick_get();
+joystick_state_t joystick_get(void);
 
 #endif /* JOYSTICK_H_ */

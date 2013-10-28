@@ -52,7 +52,7 @@
 #define PCF8563_ADDRESS_MONTH  0x07
 #define PCF8563_ADDRESS_YEAR   0x08
 
-bool pcf8563_init() {
+bool pcf8563_init(void) {
 	i2c_init();
 
 	// Normal operation
@@ -66,11 +66,11 @@ bool pcf8563_init() {
 	return TRUE;
 }
 
-void pcf8563_init_wait() {
+void pcf8563_init_wait(void) {
 	while (!pcf8563_init());
 }
 
-bool pcf8563_has_valid_time() {
+bool pcf8563_has_valid_time(void) {
 	uint8_t data;
 	if (i2c_read(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 1, &data) != 1)
 		return FALSE;
@@ -115,7 +115,7 @@ bool pcf8563_set(pcf8563_time_t time) {
 	return i2c_write(PCF8563_SLAVE_ADDRESS, PCF8563_ADDRESS_SECOND, 7, data) == 7;
 }
 
-bool pcf8563_reset() {
+bool pcf8563_reset(void) {
 	return pcf8563_set(pcf8563_time_0());
 }
 
@@ -133,7 +133,7 @@ bool pcf8563_time_valid(const pcf8563_time_t *time) {
 	return TRUE;
 }
 
-pcf8563_time_t pcf8563_time_0() {
+pcf8563_time_t pcf8563_time_0(void) {
 	pcf8563_time_t time;
 
 	time.integrity = TRUE;
@@ -150,7 +150,7 @@ pcf8563_time_t pcf8563_time_0() {
 	return time;
 }
 
-pcf8563_time_t pcf8563_time_invalid() {
+pcf8563_time_t pcf8563_time_invalid(void) {
 	pcf8563_time_t time;
 
 	time.integrity = FALSE;
@@ -167,7 +167,7 @@ pcf8563_time_t pcf8563_time_invalid() {
 	return time;
 }
 
-pcf8563_time_t pcf8563_time_compile() {
+pcf8563_time_t pcf8563_time_compile(void) {
 	static const char month_names[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 
 	char month_string[4];

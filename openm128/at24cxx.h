@@ -42,7 +42,7 @@ typedef enum {
 
 
 /** Initialize the I²C for accessing AT24CXX devices of the specified type. */
-void at24cxx_init();
+void at24cxx_init(void);
 
 /** Is this combination of type, device ID and address valid? */
 bool at24cxx_is_address_valid(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t address);

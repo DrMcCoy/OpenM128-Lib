@@ -53,7 +53,7 @@
 	#error Unsupported system clock
 #endif
 
-static uint16_t adc_read() {
+static uint16_t adc_read(void) {
 	// Start conversion
 	ADCSRA |= (1 << ADSC);
 

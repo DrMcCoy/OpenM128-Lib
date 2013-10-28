@@ -70,7 +70,7 @@ void lcd12864st_st7920_send_data(uint8_t data) {
 
 // -- Public LCD functions --
 
-void lcd12864st_init() {
+void lcd12864st_init(void) {
 	// Set pin directions and set relevant pull-ups
 	DDRB  |= 0x87;
 	PORTB |= 0xF8;
@@ -87,7 +87,7 @@ void lcd12864st_init() {
 	lcd12864st_refresh();
 }
 
-void lcd12864st_clear() {
+void lcd12864st_clear(void) {
 	lcd12864st_fill(' ');
 }
 
@@ -141,7 +141,7 @@ void lcd12864st_printf(uint8_t x, uint8_t y, const char *format, ...) {
 	lcd12864st_print(x, y, str);
 }
 
-void lcd12864st_refresh() {
+void lcd12864st_refresh(void) {
 	lcd12864st_st7920_send_code(0x02);
 
 	// Send even lines

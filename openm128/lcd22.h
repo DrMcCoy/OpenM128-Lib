@@ -63,7 +63,7 @@
 #define LCD22_COLOR_BLUE(color)  (uint8_t)((((color) >>  0) & 0x1F) << 3)
 
 /** Initialize the 2.2" color display. */
-void lcd22_init();
+void lcd22_init(void);
 
 /** Clear the whole screen of the display with a solid color. */
 void lcd22_clear_screen(uint16_t color);

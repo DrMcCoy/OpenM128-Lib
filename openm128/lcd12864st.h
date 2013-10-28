@@ -35,10 +35,10 @@
 #define LCD12864ST_COLUMNS 16
 
 /** Initialize the display. */
-void lcd12864st_init();
+void lcd12864st_init(void);
 
 /** Clear the whole display. */
-void lcd12864st_clear();
+void lcd12864st_clear(void);
 /** Clear one line (0-3) of the display. */
 void lcd12864st_clearLine(uint8_t line);
 
@@ -62,7 +62,7 @@ void lcd12864st_print_centered_P(uint8_t line, const char *str);
 void lcd12864st_printf(uint8_t x, uint8_t y, const char *format, ...);
 
 /** Refresh the whole display. */
-void lcd12864st_refresh();
+void lcd12864st_refresh(void);
 /** Refresh just one line. */
 void lcd12864st_refreshLine(uint8_t line);
 

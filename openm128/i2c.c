@@ -54,17 +54,17 @@
 // Lowest-level register fiddling
 
 // Signal transmission start
-static void i2c_set_start() {
+static void i2c_set_start(void) {
 	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
 }
 
 // Signal transmission end
-static void i2c_set_stop() {
+static void i2c_set_stop(void) {
 	TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
 }
 
 // Completely reset the I²C interface
-static void i2c_set_reset() {
+static void i2c_set_reset(void) {
 	TWCR = (1 << TWINT);
 }
 
@@ -75,29 +75,29 @@ static void i2c_set_byte(uint8_t data) {
 }
 
 // Ready to receive a byte and ACK it
-static void i2c_get_byte_ack() {
+static void i2c_get_byte_ack(void) {
 	TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
 }
 
 // Ready to receive a byte and NACK it
-static void i2c_get_byte_nack() {
+static void i2c_get_byte_nack(void) {
 	TWCR = (1 << TWINT) | (1 << TWEN);
 }
 
 // Did we get a (N)ACK?
-static bool i2c_has_status() {
+static bool i2c_has_status(void) {
 	return TWCR & (1 << TWINT);
 }
 
 // Return the (N)ACK state
-static uint8_t i2c_get_status() {
+static uint8_t i2c_get_status(void) {
 	return TWSR & 0xF8;
 }
 
 // Higher-level sending
 
 // Signal a transmission start and check if it went through
-static bool i2c_send_start() {
+static bool i2c_send_start(void) {
 	i2c_set_start();
 	while (!i2c_has_status());
 
@@ -105,7 +105,7 @@ static bool i2c_send_start() {
 }
 
 // Signal a transmission restart and check if it went through
-static bool i2c_send_restart() {
+static bool i2c_send_restart(void) {
 	i2c_set_start();
 	while (!i2c_has_status());
 
@@ -113,7 +113,7 @@ static bool i2c_send_restart() {
 }
 
 // Signal a transmission stop
-static bool i2c_send_stop() {
+static bool i2c_send_stop(void) {
 	i2c_set_stop();
 
 	/* Reset the I²C hardware too, for good measure.
@@ -203,7 +203,7 @@ static bool i2c_receive_byte(uint8_t *data, bool ack) {
 
 // -- Public I²C functions --
 
-void i2c_init() {
+void i2c_init(void) {
 	/** Set the bit-rate and clock prescaler.
 	 *
 	 * Those don't have to be exact; ball-park is enough.

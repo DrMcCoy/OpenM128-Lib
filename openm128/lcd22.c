@@ -105,7 +105,7 @@ static void lcd22_write_command(uint16_t index, uint16_t data) {
 }
 
 // Prepare for mass data write to the LCD controller
-static void lcd22_prepare_write() {
+static void lcd22_prepare_write(void) {
 	// RAM write index (prepare write)
 	LCD22_RS_L();
 	lcd22_write_reg(0x202);
@@ -113,7 +113,7 @@ static void lcd22_prepare_write() {
 }
 
 // Finish up mass data write to the LCD controller
-static void lcd22_finish_write() {
+static void lcd22_finish_write(void) {
 	LCD22_RS_L();
 	LCD22_CS_H();
 }
@@ -158,7 +158,7 @@ static bool lcd22_set_draw_area(int16_t x, int16_t y, int16_t width, int16_t hei
 }
 
 // Reset the draw area to the full LCD screen
-static void lcd22_reset_draw_area() {
+static void lcd22_reset_draw_area(void) {
 	// Reset draw window
 	lcd22_write_command(0x210, 0x0000);
 	lcd22_write_command(0x212, 0x0000);
@@ -172,7 +172,7 @@ static void lcd22_reset_draw_area() {
 
 // -- Public LCD functions
 
-void lcd22_init() {
+void lcd22_init(void) {
 	lcd22_spio_init();
 
 	// Reset LCD

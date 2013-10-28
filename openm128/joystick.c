@@ -28,11 +28,11 @@
 
 #include "openm128/joystick.h"
 
-void joystick_init() {
+void joystick_init(void) {
 	DDRG  &= ~0x1F; // Set joystick pins to input
 	PORTG |=  0x1F; // Enable pull-up resistors on the joystick pins
 }
 
-joystick_state_t joystick_get() {
+joystick_state_t joystick_get(void) {
 	return (joystick_state_t)(PING & 0x1F);
 }

@@ -35,7 +35,7 @@
  */
 #define AT24CXX_SLAVE_ADDRESS(type, id, daddr) (AT24CXX_BASE_ADDRESS | ((daddr) >> 8) | ((id) << (type)))
 
-void at24cxx_init() {
+void at24cxx_init(void) {
 	i2c_init();
 }
 

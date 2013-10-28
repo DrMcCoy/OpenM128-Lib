@@ -43,7 +43,7 @@ typedef enum {
 
 
 /** Initialize the I²C in master mode. */
-void i2c_init();
+void i2c_init(void);
 
 /** Poll a slave.
  *

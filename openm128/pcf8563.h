@@ -44,13 +44,13 @@ typedef struct {
 } pcf8563_time_t;
 
 /** Initialize the PCF8563 RTC. */
-bool pcf8563_init();
+bool pcf8563_init(void);
 
 /** Try to initialize the PCF8563 until it works. */
-void pcf8563_init_wait();
+void pcf8563_init_wait(void);
 
 /** Does the PCF8563 currently have a valid timestamp? */
-bool pcf8563_has_valid_time();
+bool pcf8563_has_valid_time(void);
 
 /** Get the current time from the PCF8563. */
 bool pcf8563_get(pcf8563_time_t *time);
@@ -59,17 +59,17 @@ bool pcf8563_get(pcf8563_time_t *time);
 bool pcf8563_set(pcf8563_time_t time);
 
 /** Reset the PCF8563 to "time 0" (1900-01-01T00:00:00). */
-bool pcf8563_reset();
+bool pcf8563_reset(void);
 
 /** Check if a certain timestamp is valid (within the range supported by the PCF8563). */
 bool pcf8563_time_valid(const pcf8563_time_t *time);
 
 /** Return a timestamp representing "time 0" (1900-01-01T00:00:00). */
-pcf8563_time_t pcf8563_time_0();
+pcf8563_time_t pcf8563_time_0(void);
 /** Return an invalid timestamp. */
-pcf8563_time_t pcf8563_time_invalid();
+pcf8563_time_t pcf8563_time_invalid(void);
 /** Return a timestamp corresponding to the compile time. */
-pcf8563_time_t pcf8563_time_compile();
+pcf8563_time_t pcf8563_time_compile(void);
 
 /** Convert a PCF8563 timestamp into a 32-bit unix timestamp.
  *
