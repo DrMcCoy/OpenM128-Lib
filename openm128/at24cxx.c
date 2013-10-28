@@ -28,6 +28,11 @@
 
 #define AT24CXX_BASE_ADDRESS (0xA0 >> 1)
 
+/* Depending on the device type, the lower 3 bits of the slave address are used to either
+   - specify an ID, so that several devices of the same type can be connected on the same bus
+   - specify a memory page, so that more than 256 bytes can be addressed
+   - a combination thereof
+ */
 #define AT24CXX_SLAVE_ADDRESS(type, id, daddr) (AT24CXX_BASE_ADDRESS | ((daddr) >> 8) | ((id) << (type)))
 
 void at24cxx_init() {
