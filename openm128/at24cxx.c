@@ -80,14 +80,14 @@ bool at24cxx_read_byte(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t addre
 	if (!at24cxx_is_address_valid(at24cxx, device_id, address))
 		return FALSE;
 
-	return i2c_read(AT24CXX_SLAVE_ADDRESS(at24cxx, device_id, address), address & 0x00FF, 1, data);
+	return i2c_read(AT24CXX_SLAVE_ADDRESS(at24cxx, device_id, address), address & 0x00FF, 1, data) == 1;
 }
 
 bool at24cxx_write_byte(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t address, uint8_t data) {
 	if (!at24cxx_is_address_valid(at24cxx, device_id, address))
 		return FALSE;
 
-	return i2c_write(AT24CXX_SLAVE_ADDRESS(at24cxx, device_id, address), address & 0x00FF, 1, &data);
+	return i2c_write(AT24CXX_SLAVE_ADDRESS(at24cxx, device_id, address), address & 0x00FF, 1, &data) == 1;
 }
 
 uint16_t at24cxx_read(at24cxx_type_t at24cxx, uint8_t device_id, uint16_t address, uint16_t n, uint8_t *data) {
