@@ -196,6 +196,54 @@ pcf8563_time_t pcf8563_time_compile() {
 	return time;
 }
 
+uint32_t pcf8563_time_to_unix(const pcf8563_time_t *time) {
+	if (!pcf8563_time_valid(time) || (time->year < 1970))
+		return 0xFFFFFFFF;
+
+	const uint16_t days_to_month_start[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
+
+	const uint32_t years      = time->year - 1970;
+	const uint32_t leap_years = ((time->year - 1) - 1968) / 4 - ((time->year - 1) - 1900) / 100 + ((time->year - 1) - 1600) / 400;
+
+	uint32_t unix = 0;
+	unix += time->second + 60L * time->minute + 60L * 60L * time->hour;
+	unix += (days_to_month_start[time->month - 1] + time->day - 1L) * 60L * 60L * 24L;
+	unix += (years * 365L + leap_years) * 60L * 60L * 24L;
+
+	if ((time->month > 2) && (time->year %4 == 0 && (time->year % 100 != 0 || time->year % 400 == 0)))
+		unix += 60L * 60L * 24L;
+
+	return unix;
+}
+
+void pcf8563_time_from_unix(pcf8563_time_t *time, uint32_t unix) {
+	uint32_t day = unix / (24L * 60L * 60L);
+	uint32_t secs = unix % (24L * 60L * 60L);
+	uint32_t mins = secs / 60;
+
+	time->hour = mins / 60;
+	time->minute = mins % 60;
+	time->second = secs % 60;
+
+	uint32_t year = (((day * 4) + 2) / 1461);
+	bool leap = (time->year %4 == 0 && (time->year % 100 != 0 || time->year % 400 == 0));
+
+	time->year = year + 1970;
+
+	day -= ((year * 1461) + 1) / 4;
+
+	time->day = day;
+
+	day += (day > 58 + leap) ? ((leap) ? 1 : 2) : 0;
+
+	time->month = ((day * 12) + 6) / 367;
+	time->day = day + 1 - ((time->month * 367) + 5) / 12;
+
+	time->month++;
+	time->weekday = pcf8563_calculate_day_of_week(time->day, time->month, time->year);
+	time->integrity = TRUE;
+}
+
 /** Claus Tøndering's algorithm.
  *  See https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#T.C3.B8ndering.27s_algorithm
  *  for specifics.

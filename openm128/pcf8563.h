@@ -71,6 +71,18 @@ pcf8563_time_t pcf8563_time_invalid();
 /** Return a timestamp corresponding to the compile time. */
 pcf8563_time_t pcf8563_time_compile();
 
+/** Convert a PCF8563 timestamp into a 32-bit unix timestamp.
+ *
+ *  @param time The time to convert.
+ *
+ *  @return A unix timestamp (number of seconds since 1970-01-01T00:00:00) or 0xFFFFFFFF if
+ *          the specified time can not be represented using a unix timestamp.
+ */
+uint32_t pcf8563_time_to_unix(const pcf8563_time_t *time);
+
+/** Convert a 32-bit unix timestamp into a PCF8563 timestamp. */
+void pcf8563_time_from_unix(pcf8563_time_t *time, uint32_t unix);
+
 /** Calculate the day of the week from day (of the month), month and year. */
 uint8_t pcf8563_calculate_day_of_week(uint8_t day, uint8_t month, uint16_t year);
 
