@@ -29,6 +29,8 @@
 #include "openm128/usart0.h"
 #include "openm128/types.h"
 
+static uint8_t usart0_echo_enabled = 0;
+
 void usart0_put(unsigned char c) {
 	while(!(UCSR0A & 0x20));
 	UDR0 = c;
@@ -43,6 +45,12 @@ int usart0_get(void) {
 
 	if (status & 0x1C)
 		return _FDEV_ERR;
+
+	if (usart0_echo_enabled) {
+		usart0_put(data);
+		if (data == '\r')
+			usart0_put('\n');
+	}
 
 	return data;
 }
@@ -91,4 +99,12 @@ void usart0_init(void) {
 
 	stdout = &uart0_stdout_stdin;
 	stdin  = &uart0_stdout_stdin;
+}
+
+void usart0_enable_echo(void) {
+	usart0_echo_enabled = 1;
+}
+
+void usart0_disable_echo(void) {
+	usart0_echo_enabled = 0;
 }
