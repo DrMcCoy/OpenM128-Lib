@@ -64,7 +64,14 @@ static int uart0_putchar(char c, FILE *stream) {
 }
 
 static int uart0_getchar(FILE *stream) {
-	return usart0_get();
+	int data = _FDEV_EOF;
+	while (data == _FDEV_EOF)
+		data = usart0_get();
+
+	if (data == '\r')
+		data = '\n';
+
+	return data;
 }
 
 static FILE uart0_stdout_stdin = FDEV_SETUP_STREAM(uart0_putchar, uart0_getchar, _FDEV_SETUP_RW);
