@@ -24,6 +24,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file lcd12864st.h
+ *  The character encoding used in the display is EUC-CN. Each memory "cell" consists of 2 bytes,
+ *  and each cell can either contain two 8x16 7-bit ASCII characters (if the bytes are within
+ *  the range 0-127), or one 16x16 GB 2312 character.
+ *
+ *  For details on that character encoding, see <https://en.wikipedia.org/wiki/GB_2312> and
+ *  <http://www.khngai.com/chinese/charmap/tblgb.php>.
+ */
+
 #ifndef LCD12864ST_H_
 #define LCD12864ST_H_
 
