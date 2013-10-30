@@ -39,6 +39,7 @@
 #include "openm128/types.h"
 
 typedef enum {
+	kPortNone,
 	kPortA,
 	kPortB,
 	kPortC,
