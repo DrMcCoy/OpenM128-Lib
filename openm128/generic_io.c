@@ -72,14 +72,14 @@ void generic_io_make_output(generic_io_t *gio) {
 	*gio->reg_ddr |= gio->pin_mask;
 }
 
-bool generic_io_read(generic_io_t *gio) {
+bool generic_io_read(const generic_io_t *gio) {
 	if (!*gio->reg_in)
 		return FALSE;
 
 	return !!(*gio->reg_in & gio->pin_mask);
 }
 
-uint8_t generic_io_read_multi(generic_io_t *gio, uint8_t count) {
+uint8_t generic_io_read_multi(const generic_io_t *gio, uint8_t count) {
 	if (count > 8)
 		return 0x00;
 

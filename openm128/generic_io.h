@@ -65,9 +65,9 @@ void generic_io_make_input(generic_io_t *gio, bool pullup);
 void generic_io_make_output(generic_io_t *gio);
 
 /** Read a value from the generic IO. */
-bool generic_io_read(generic_io_t *gio);
+bool generic_io_read(const generic_io_t *gio);
 /** Read up to 8 generic IOs and arrange them into a multi-bit value, LSB first and right-adjusted. */
-uint8_t generic_io_read_multi(generic_io_t *gio, uint8_t count);
+uint8_t generic_io_read_multi(const generic_io_t *gio, uint8_t count);
 
 /** Set the bit on the generic IO. */
 void generic_io_set(generic_io_t *gio);
