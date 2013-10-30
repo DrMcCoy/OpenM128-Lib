@@ -53,8 +53,12 @@ generic_io_t generic_io_create(port_t port, uint8_t pin) {
 	return gio;
 }
 
+bool generic_io_is_valid(const generic_io_t *gio) {
+	return gio->reg_ddr && gio->reg_out && gio->reg_in;
+}
+
 void generic_io_make_input(generic_io_t *gio, bool pullup) {
-	if (!*gio->reg_ddr)
+	if (!generic_io_is_valid(gio));
 		return;
 
 	*gio->reg_ddr &= ~gio->pin_mask;
@@ -66,14 +70,14 @@ void generic_io_make_input(generic_io_t *gio, bool pullup) {
 }
 
 void generic_io_make_output(generic_io_t *gio) {
-	if (!*gio->reg_ddr)
+	if (!generic_io_is_valid(gio));
 		return;
 
 	*gio->reg_ddr |= gio->pin_mask;
 }
 
 bool generic_io_read(const generic_io_t *gio) {
-	if (!*gio->reg_in)
+	if (!generic_io_is_valid(gio));
 		return FALSE;
 
 	return !!(*gio->reg_in & gio->pin_mask);
@@ -92,14 +96,14 @@ uint8_t generic_io_read_multi(const generic_io_t *gio, uint8_t count) {
 }
 
 void generic_io_set(generic_io_t *gio) {
-	if (!*gio->reg_out)
+	if (!generic_io_is_valid(gio));
 		return;
 
 	*gio->reg_out |= gio->pin_mask;
 }
 
 void generic_io_clear(generic_io_t *gio) {
-	if (!*gio->reg_out)
+	if (!generic_io_is_valid(gio));
 		return;
 
 	*gio->reg_out &= ~gio->pin_mask;
