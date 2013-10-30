@@ -255,7 +255,61 @@ bool i2c_send_command(uint16_t slave_address, uint8_t command) {
 	return TRUE;
 }
 
-uint16_t i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
+uint16_t i2c_write(uint16_t slave_address, uint16_t n, const uint8_t *data) {
+	if(!i2c_send_start()) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_send_data(*data++))
+			break;
+
+		processed++;
+	}
+
+	i2c_send_stop();
+	return processed;
+}
+
+bool i2c_write_byte(uint16_t slave_address, uint8_t data) {
+	return i2c_write(slave_address, 1, &data) == 1;
+}
+
+uint16_t i2c_read(uint16_t slave_address, uint16_t n, uint8_t *data) {
+	if (n == 0)
+		return 0;
+
+	if(!i2c_send_start()) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address))) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_receive_byte(data++, n != 0))
+			break;
+
+		processed++;
+	}
+
+
+	i2c_send_stop();
+	return processed;
+}
+
+uint16_t i2c_write8(uint16_t slave_address, uint8_t data_address, uint16_t n, const uint8_t *data) {
 	if(!i2c_send_start()) {
 		i2c_send_stop();
 		return 0;
@@ -283,11 +337,11 @@ uint16_t i2c_write(uint16_t slave_address, uint8_t data_address, uint16_t n, con
 	return processed;
 }
 
-bool i2c_write_byte(uint16_t slave_address, uint8_t data_address, uint8_t data) {
-	return i2c_write(slave_address, data_address, 1, &data) == 1;
+bool i2c_write8_byte(uint16_t slave_address, uint8_t data_address, uint8_t data) {
+	return i2c_write8(slave_address, data_address, 1, &data) == 1;
 }
 
-uint16_t i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data) {
+uint16_t i2c_read8(uint16_t slave_address, uint8_t data_address, uint16_t n, uint8_t *data) {
 	if (n == 0)
 		return 0;
 
@@ -302,6 +356,80 @@ uint16_t i2c_read(uint16_t slave_address, uint8_t data_address, uint16_t n, uint
 	}
 
 	if(!i2c_send_data(data_address)) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_restart()) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_read_address16(SLAVE_ADDRESS_READ(slave_address))) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_receive_byte(data++, n != 0))
+			break;
+
+		processed++;
+	}
+
+
+	i2c_send_stop();
+	return processed;
+}
+
+uint16_t i2c_write16(uint16_t slave_address, uint16_t data_address, uint16_t n, const uint8_t *data) {
+	if(!i2c_send_start()) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_data(data_address >> 8) || !i2c_send_data(data_address & 0xFF)) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		if(!i2c_send_data(*data++))
+			break;
+
+		processed++;
+	}
+
+	i2c_send_stop();
+	return processed;
+}
+
+bool i2c_write16_byte(uint16_t slave_address, uint16_t data_address, uint8_t data) {
+	return i2c_write16(slave_address, data_address, 1, &data) == 1;
+}
+
+uint16_t i2c_read16(uint16_t slave_address, uint16_t data_address, uint16_t n, uint8_t *data) {
+	if (n == 0)
+		return 0;
+
+	if(!i2c_send_start()) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
+		i2c_send_stop();
+		return 0;
+	}
+
+	if(!i2c_send_data(data_address >> 8) || !i2c_send_data(data_address & 0xFF)) {
 		i2c_send_stop();
 		return 0;
 	}
