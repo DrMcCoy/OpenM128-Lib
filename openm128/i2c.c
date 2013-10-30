@@ -236,23 +236,7 @@ bool i2c_poll(uint16_t slave_address, i2c_poll_t type) {
 }
 
 bool i2c_send_command(uint16_t slave_address, uint8_t command) {
-	if(!i2c_send_start()) {
-		i2c_send_stop();
-		return FALSE;
-	}
-
-	if(!i2c_send_write_address16(SLAVE_ADDRESS_WRITE(slave_address))) {
-		i2c_send_stop();
-		return FALSE;
-	}
-
-	if(!i2c_send_data(command)) {
-		i2c_send_stop();
-		return FALSE;
-	}
-
-	i2c_send_stop();
-	return TRUE;
+	return i2c_write_byte(slave_address, command);
 }
 
 uint16_t i2c_write(uint16_t slave_address, uint16_t n, const uint8_t *data) {
