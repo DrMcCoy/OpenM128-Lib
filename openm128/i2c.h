@@ -27,6 +27,11 @@
 /** @file i2c.h
  *  For some reason, avr-gcc 4.5.1 breaks I²C communication with compiling with -O3.
  *  If you get weird errors, try reducing optimization to -O2.
+ *
+ *  The slave address used here is the 7 bit identifying the slave device, i.e. not
+ *  including the R/W bit, right-aligned. For example, if the data sheet of a device
+ *  mentions that the control byte for writing is 10100000 (0xA0) and for reading is
+ *  10100001 (0xA1), then the slave address is 010100000 (0x50), or 0xA0 >> 1.
  */
 
 #ifndef I2C_H_
