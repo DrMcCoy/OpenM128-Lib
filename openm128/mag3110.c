@@ -34,15 +34,15 @@ bool mag3110_init(void) {
 
 	// Make sure the device ID is correct
 	uint8_t device_id;
-	if ((i2c_read(MAG3110_SLAVE_ADDRESS, 0x07, 1, &device_id) != 1) || (device_id != 0xC4))
+	if ((i2c_read8(MAG3110_SLAVE_ADDRESS, 0x07, 1, &device_id) != 1) || (device_id != 0xC4))
 		return FALSE;
 
 	// Raw mode
-	if (!i2c_write_byte(MAG3110_SLAVE_ADDRESS, 0x11, 0x20))
+	if (!i2c_write8_byte(MAG3110_SLAVE_ADDRESS, 0x11, 0x20))
 		return FALSE;
 
 	// Continuous measurements, not fast mode, 20Hz output rate, 64 oversample, 1280Hz ADC rate, 900µA, 0.3µT rms noise
-	if (!i2c_write_byte(MAG3110_SLAVE_ADDRESS, 0x10, 0x11))
+	if (!i2c_write8_byte(MAG3110_SLAVE_ADDRESS, 0x10, 0x11))
 		return FALSE;
 
 	return TRUE;
@@ -50,7 +50,7 @@ bool mag3110_init(void) {
 
 bool mag3110_has_measurement(void) {
 	uint8_t status;
-	if (i2c_read(MAG3110_SLAVE_ADDRESS, 0x00, 1, &status) != 1)
+	if (i2c_read8(MAG3110_SLAVE_ADDRESS, 0x00, 1, &status) != 1)
 		return FALSE;
 
 	return !!(status & 0x40);
@@ -60,7 +60,7 @@ bool mag3110_wait_measurement(void) {
 	uint8_t status = 0x00;
 
 	while (!(status & 0x40))
-		if (i2c_read(MAG3110_SLAVE_ADDRESS, 0x00, 1, &status) != 1)
+		if (i2c_read8(MAG3110_SLAVE_ADDRESS, 0x00, 1, &status) != 1)
 			return FALSE;
 
 	return TRUE;
@@ -68,7 +68,7 @@ bool mag3110_wait_measurement(void) {
 
 bool mag3110_get(int16_t *x, int16_t *y, int16_t *z) {
 	uint8_t data[6];
-	if (i2c_read(MAG3110_SLAVE_ADDRESS, 0x01, 6, data) != 6)
+	if (i2c_read8(MAG3110_SLAVE_ADDRESS, 0x01, 6, data) != 6)
 		return FALSE;
 
 	*x = (int16_t)((((uint16_t)data[0]) << 8) | data[1]);
@@ -79,5 +79,5 @@ bool mag3110_get(int16_t *x, int16_t *y, int16_t *z) {
 }
 
 bool mag3110_get_temperature(int8_t *temp) {
-	return i2c_read(MAG3110_SLAVE_ADDRESS, 0x0F, 1, (uint8_t *) temp);
+	return i2c_read8(MAG3110_SLAVE_ADDRESS, 0x0F, 1, (uint8_t *) temp);
 }
