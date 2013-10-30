@@ -59,7 +59,7 @@ bool pcf8574_wait_interrupt(const pcf8574_t *pcf8574) {
 }
 
 bool pcf8574_get(const pcf8574_t *pcf8574, uint8_t *data) {
-	return i2c_read(PCF8574_SLAVE_ADDRESS(pcf8574->type, pcf8574->device_id), 1, data);
+	return i2c_read(PCF8574_SLAVE_ADDRESS(pcf8574->type, pcf8574->device_id), 1, data) == 1;
 }
 
 bool pcf8574_set(pcf8574_t *pcf8574, uint8_t data) {
