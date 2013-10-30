@@ -24,6 +24,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file at24cxx.h
+ *  These functions should also be compatible with FM24CLXX FRAM devices.
+ *  Since those ferroelectric devices can write with the speed of the I²C bus, polling
+ *  is not strictly necessary there and will always immediately return a ready state.
+ */
+
 #ifndef AT24CXX_H_
 #define AT24CXX_H_
 
