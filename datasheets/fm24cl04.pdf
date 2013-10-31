@@ -1,0 +1,199 @@
+<html>
+<head><title>Ramtron International - datasheet pdf</title>
+<meta http-equiv=Content-Type content=text/html; charset=iso-8859-1>
+ 
+ <style type="text/css">
+ body
+ {
+  SCROLLBAR-FACE-COLOR: #336699;
+  scrollbar-highlight-color:#FFFFFF;
+  scrollbar-shadow-color:#FFFFFF;
+  scrollbar-3dlight-color:#FFFFFF;
+  scrollbar-arrow-color:#FFFFFF;
+  background-image:url('http://www.yagi-antennas.com/electr.jpg');
+  background-repeat:repeat;
+  background-attachment:fixed
+ }
+ a:visited {  font-family: Arial;  color: #0000FF; text-decoration: none; font-size: 12; line-height: 1.6  }
+ a:link    {  font-family: Arial;  color: #0000FF; text-decoration: none; font-size: 12; line-height: 1.6 }
+ a:hover   {  font-family: Arial;  color: #ff0000; text-decoration: underline; font-size: 12; line-height: 1.6 }
+ </style>
+ 
+ </head>
+ 
+ <body text=#000000 bgcolor=#FFFFFF link=#0000EE vlink=#551A8B alink=#FF0000 background="http://www.yagi-antennas.com/electr.jpg"
+  bottommargin=0 leftmargin=0 marginheight=0 marginwidth=0 rightmargin=0 topmargin=0>
+ 
+ <center>
+ 
+ <table BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" HEIGHT=70 >
+ <tr VALIGN=CENTER BGCOLOR=#0060a4>
+ <td VALIGN=Bottom heigh=60><b>
+ <font face=arial><font size=+2><font color=#ffffff>&nbsp;<IMG SRC="http://www.yagi-antennas.com/datasheetcatalog.png" border=0></font></font></font></b></td>
+ 
+ <td>
+ <center>
+ 
+ </center>
+ </td>
+ </tr>
+ </table>
+ <table BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+ <tr  bgcolor=#0080c4 height=23>
+   <td>
+ 
+ <b>
+ <font color=ffffff><font size=-1>&nbsp;&nbsp;|&nbsp;&nbsp;
+ <a href="http://www.datasheetcatalog.com" title="Home">
+ <font color=#ffffff>Home</font></a>
+ &nbsp;&nbsp;|&nbsp;&nbsp;
+ 
+ <a href="/other_manufacturer.html" title="All manufacturers on www.datasheetcatalog.com">
+ <font color=#ffffff>All manufacturers</font></a>
+ &nbsp;&nbsp;|&nbsp;&nbsp;
+ 
+ <a href="/function/" title="Electronic Components by functions">
+ <font color=#ffffff>By Category</font></a>
+ &nbsp;&nbsp;|&nbsp;&nbsp;
+ 
+ 
+ </font></font>
+ </td>
+ <td align=right>
+ <table><tr>
+ <td><a href="http://www.datasheetcatalog.com"><img src="http://www.yagi-antennas.com/images/en.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net"><img src="http://www.yagi-antennas.com/images/fr.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net/de/"><img src="http://www.yagi-antennas.com/images/de.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net/es/"><img src="http://www.yagi-antennas.com/images/es.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net/it/"><img src="http://www.yagi-antennas.com/images/it.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net/pt/"><img src="http://www.yagi-antennas.com/images/pt.png" border=0></td>
+ <td><a href="http://www.datasheetcatalog.net/ru/"><img src="http://www.yagi-antennas.com/images/ru.png" border=0></td>
+ <td><a href="http://www.datasheet.ro"><img src="http://www.yagi-antennas.com/images/ro.png" border=0></td>
+ </tr></table>
+ 
+ </td>
+ </tr>
+ </table>
+ 
+ <script language="JavaScript">
+ <!-- hide
+ 
+ function onEnter( evt, frm ) {
+ var keyCode = null;
+ 
+ if( evt.which ) {
+ keyCode = evt.which;
+ } else if( evt.keyCode ) {
+ keyCode = evt.keyCode;
+ }
+ if( 13 == keyCode ) {
+ frm.btnEnter.click();
+ return false;
+ }
+ return true;
+ }
+ 
+ // -->
+ </script>
+ 
+ 
+ <br>
+ <table width=728 bgcolor=#FFCC00 border=0 cellspacing=2 cellpadding=2><tr><td>
+ <FORM NAME="searchForm" onSubmit="return valForm()">
+ <font face=arial><font size=-1><center><b><i>Part name, description or manufacturer contain: </b></i>&nbsp;&nbsp;&nbsp;
+ <input type="text" name="myText" size="35" onkeypress="return onEnter(event,this.form);" >
+ <input type="button" value="Search" name="btnEnter" onclick="parent.location='http://search.datasheetcatalog.net/key/'+document.searchForm.myText.value.toUpperCase().replace(/\s/g,'+')">
+ </td></tr></table>
+ 
+ 
+ <table width=728 bgcolor=#FFCC00 border=0 cellspacing=1 cellpadding=2><tr bgcolor=#FFFFFF><td><font face=arial size=-2>Quick jump to:  &nbsp;&nbsp;<a href="/catalog/p10880.shtml"><font face="Arial"><font size=-2>1N</font></font></a>&nbsp;&nbsp;<a href="/catalog/p34560.shtml"><font face="Arial"><font size=-2>2N</font></font></a>&nbsp;&nbsp;<a href="/catalog/p39320.shtml"><font face="Arial"><font size=-2>2SA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p41840.shtml"><font face="Arial"><font size=-2>2SC</font></font></a>&nbsp;&nbsp;<a href="/catalog/p80320.shtml"><font face="Arial"><font size=-2>74</font></font></a>&nbsp;&nbsp;<a href="/catalog/p110560.shtml"><font face="Arial"><font size=-2>AD</font></font></a>&nbsp;&nbsp;<a href="/catalog/p183200.shtml"><font face="Arial"><font size=-2>BA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p187320.shtml"><font face="Arial"><font size=-2>BC</font></font></a>&nbsp;&nbsp;<a href="/catalog/p192120.shtml"><font face="Arial"><font size=-2>BD</font></font></a>&nbsp;&nbsp;<a href="/catalog/p194840.shtml"><font face="Arial"><font size=-2>BF</font></font></a>&nbsp;&nbsp;<a href="/catalog/p204400.shtml"><font face="Arial"><font size=-2>BU</font></font></a>&nbsp;&nbsp;<a href="/catalog/p252040.shtml"><font face="Arial"><font size=-2>CXA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p339960.shtml"><font face="Arial"><font size=-2>HCF</font></font></a>&nbsp;&nbsp;<a href="/catalog/p440680.shtml"><font face="Arial"><font size=-2>IRF</font></font></a>&nbsp;&nbsp;<a href="/catalog/p470640.shtml"><font face="Arial"><font size=-2>KA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p476120.shtml"><font face="Arial"><font size=-2>KIA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p487560.shtml"><font face="Arial"><font size=-2>LA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p496680.shtml"><font face="Arial"><font size=-2>LM</font></font></a>&nbsp;&nbsp;<a href="/catalog/p598960.shtml"><font face="Arial"><font size=-2>MC</font></font></a>&nbsp;&nbsp;<a href="/catalog/p727880.shtml"><font face="Arial"><font size=-2>NE</font></font></a>&nbsp;&nbsp;<a href="/catalog/p888480.shtml"><font face="Arial"><font size=-2>ST</font></font></a>&nbsp;&nbsp;<a href="/catalog/p902720.shtml"><font face="Arial"><font size=-2>STK</font></font></a>&nbsp;&nbsp;<a href="/catalog/p930320.shtml"><font face="Arial"><font size=-2>TDA</font></font></a>&nbsp;&nbsp;<a href="/catalog/p942920.shtml"><font face="Arial"><font size=-2>TL</font></font></a>&nbsp;&nbsp;<a href="/catalog/p983000.shtml"><font face="Arial"><font size=-2>UA</font></font></a>&nbsp;&nbsp;</td></tr></table>
+ <table width=728 bgcolor=#FFCC00 border=0 cellspacing=1 cellpadding=2><tr bgcolor=#FFFFFF>
+ <td><font face=arial size=-2>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/L/M/3/1/LM317.shtml" title="LM317 datasheet pdf" alt="LM317 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>LM317</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/L/M/3/3/LM339.shtml" title="LM339 datasheet pdf" alt="LM339 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>LM339</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/M/A/X/2/MAX232.shtml" title="MAX232 datasheet pdf" alt="MAX232 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>MAX232</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/N/E/5/5/NE555.shtml" title="NE555 datasheet pdf" alt="NE555 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>NE555</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/L/M/3/2/LM324.shtml" title="LM324 datasheet pdf" alt="LM324 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>LM324</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/8/0/5/1/8051.shtml" title="8051 datasheet pdf" alt="8051 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>8051</font></font></font></a>
+ 
+ &nbsp;&nbsp;<a href="/datasheets_pdf/7/8/0/5/7805.shtml" title="7805 datasheet pdf" alt="7805 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>7805</font></font></font></a>
+ 
+ &nbsp;&nbsp;<a href="/datasheets_pdf/2/N/3/0/2N3055.shtml" title="2N3055 datasheet pdf" alt="2N3055 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>2N3055</font></font></font></a>
+ 
+ &nbsp;&nbsp;<a href="/datasheets_pdf/L/M/3/5/LM358.shtml" title="LM358 datasheet pdf" alt="LM358 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>LM358</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/2/N/2/2/2N2222.shtml" title="2N2222 datasheet pdf" alt="2N2222 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>2N2222</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/7/4/L/S/74LS138.shtml" title="74LS138 datasheet pdf" alt="74LS138 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>74LS138</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/T/D/A/7/TDA7294.shtml" title="TDA7294 datasheet pdf" alt="TDA7294 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>TDA7294</font></font></font></a>
+ 
+ &nbsp;&nbsp;<a href="/datasheets_pdf/T/L/4/3/TL431.shtml" title="TL431 datasheet pdf" alt="TL431 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>TL431</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/I/R/F/5/IRF540.shtml" title="IRF540 datasheet pdf" alt="IRF540 datasheet pdf"><font face="Arial"><font size=-2><font color=#AAAAAA>IRF540</font></font></font></a>
+ &nbsp;&nbsp;<a href="/datasheets_pdf/1/N/4/1/1N4148.shtml"><font face="Arial"><font size=-2><font color=#AAAAAA>1N4148</font></font></font></a>
+ &nbsp;&nbsp;<a href="http://search.datasheetcatalog.net/key/LM318"><font face="Arial"><font size=-2><font color=#AAAAAA>LM318</font></font></font></a>
+ </td></tr></table>
+  
+ 
+<br>
+<iframe src="http://www.datasheetcatalog.org/cgi-bin/ad.pl" style="width: 0px; height: 0px; border: 0" width="0" height="0" frameBorder="0" scrolling="no"></iframe>
+ 
+<script type="text/javascript"><!--
+google_ad_client = "pub-8095160907454010";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> 
+</script>
+<br><br>
+<center><table width=728 border=0 cellpading=0 cellspacing=1 bgcolor=#000000><tr bgcolor=#ffffff><td bgcolor=#ffffff>
+<font face=arial size=+1 color="#FF0000">The requested file:<br><font color="#0000ff">http://www.datasheetcatalog.org/datasheets2/12/122167_1.pdf</font><br>is the data sheet for the following electronic components:<br></font></font><hr></blockquote><center>
+<h1>Ramtron International</h1>
+<table border=1 cellpadding=3 cellspacing=0 width="98%">
+<tr bgcolor="#eeeeee" onmouseover="this.bgColor='#FFdd99'" onmouseout="this.bgColor='#eeeeee'"><td><font face=arial><font size=-1>1</font></font></td><td><li><a href="http://www.datasheetcatalog.com/datasheets_pdf/F/M/2/4/FM24CL04.shtml" title="Download or view FM24CL04 datasheet">FM24CL04</a></td><td><font face=arial><font size=-1>4Kb FRAM Serial Memory</font></font></td></tr>
+<tr bgcolor="#eeeeee" onmouseover="this.bgColor='#FFdd99'" onmouseout="this.bgColor='#eeeeee'"><td><font face=arial><font size=-1>2</font></font></td><td><li><a href="http://www.datasheetcatalog.com/datasheets_pdf/F/M/2/4/FM24CL04.shtml" title="Download or view FM24CL04 datasheet">FM24CL04</a></td><td><font face=arial><font size=-1>4Kb FRAM Serial Memory</font></font></td></tr>
+<tr bgcolor="#eeeeee" onmouseover="this.bgColor='#FFdd99'" onmouseout="this.bgColor='#eeeeee'"><td><font face=arial><font size=-1>3</font></font></td><td><li><a href="http://www.datasheetcatalog.com/datasheets_pdf/F/M/2/4/FM24CL04-S.shtml" title="Download or view FM24CL04-S datasheet">FM24CL04-S</a></td><td><font face=arial><font size=-1>4Kb FRAM Serial Memory</font></font></td></tr>
+<tr bgcolor="#eeeeee" onmouseover="this.bgColor='#FFdd99'" onmouseout="this.bgColor='#eeeeee'"><td><font face=arial><font size=-1>4</font></font></td><td><li><a href="http://www.datasheetcatalog.com/datasheets_pdf/F/M/2/4/FM24CL04-S.shtml" title="Download or view FM24CL04-S datasheet">FM24CL04-S</a></td><td><font face=arial><font size=-1>4Kb FRAM Serial Memory</font></font></td></tr>
+</table>
+<br>
+<font face=arial size=+1><font color=#ff0000>Select the part name and then you can download the datasheet in PDF format.</font></font><br><br><br>
+</td></tr></table>
+
+<br><center>
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-8095160907454010";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+
+<br><br>
+
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-annotation="inline" data-width="300"></div>
+
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+<br><p><center>
+<font face=Arial,Helvetica><font size=-2><font color=#000000>&copy; 2013 - Datasheet Catalog com</font></a></font></font>
+<br>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-756193-1";
+urchinTracker();
+</script>
+</body></html>
