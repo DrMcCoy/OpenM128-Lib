@@ -27,7 +27,7 @@
 #include <avr/io.h>
 
 #include "openm128/usart0.h"
-#include "openm128/types.h"
+#include "openm128/util.h"
 
 static uint8_t usart0_echo_enabled = 0;
 
@@ -107,4 +107,48 @@ void usart0_enable_echo(void) {
 
 void usart0_disable_echo(void) {
 	usart0_echo_enabled = 0;
+}
+
+void usart0_dump_hex(const uint8_t *data, uint16_t size) {
+	if (size == 0)
+		return;
+
+	uint16_t offset = 0;
+
+	while (size > 0) {
+		// At max 16 bytes printed per row
+		uint16_t n = MIN(size, 16);
+
+		// Print an offset
+		printf("%04X  ", offset);
+
+		// 2 "blobs" of each 8 bytes per row
+		for (uint8_t i = 0; i < 2; i++) {
+			for (uint8_t j = 0; j < 8; j++) {
+				uint8_t m = i * 8 + j;
+
+				if (m < n)
+					// Print the data
+					printf("%02X ", data[m]);
+				else
+					// Last row, data count not aligned to 16
+					printf("   ");
+			}
+
+			// Separate the blobs by an extra space
+			printf(" ");
+		}
+
+		printf("|");
+
+		// If the data byte is a printable character, print it. If not, substitute a '.'
+		for (uint8_t i = 0; i < n; i++)
+			printf("%c", (data[i] > 31 && data[i] < 127) ? data[i] : '.');
+
+		printf("|\n");
+
+		size   -= n;
+		offset += n;
+		data   += n;
+	}
 }

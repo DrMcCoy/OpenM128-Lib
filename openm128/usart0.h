@@ -29,6 +29,8 @@
 
 #include <stdio.h>
 
+#include "openm128/types.h"
+
 /** Initialize the USART0.
  *
  *  Note: This also binds stdout and stdin to the USART0, so that stdio functions can be used.
@@ -59,5 +61,8 @@ void usart0_enable_echo(void);
 
 /** Disable echo mode (default). */
 void usart0_disable_echo(void);
+
+/** Dump data in a nice-looking hexadecimal format onto the USART0. */
+void usart0_dump_hex(const uint8_t *data, uint16_t size);
 
 #endif /* USART_H_*/
