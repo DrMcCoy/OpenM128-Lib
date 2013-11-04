@@ -198,7 +198,7 @@ static void k9fxx08x0c_send_address_full(uint32_t address) {
 }
 
 
-// Reading ID and status
+// -- Reading ID and status --
 
 static void k9fxx08x0c_busy_wait() {
 	_delay_us(1);
@@ -347,6 +347,12 @@ bool k9fxx08x0c_is_write_protected(k9fxx08x0c_t *k9fxx08x0c) {
 	return !(k9fxx08x0c_read_status() & 0x80);
 }
 
+static uint32_t k9fxx08x0c_address(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint16_t offset) {
+	return (uint32_t)block * k9fxx08x0c->page_full_size * k9fxx08x0c->pages_per_block +
+	       (uint32_t)page  * k9fxx08x0c->page_full_size +
+	       (uint32_t)offset;
+}
+
 bool k9fxx08x0c_read_page(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint8_t *data) {
 	return k9fxx08x0c_read_page_part(k9fxx08x0c, block, page, 0, k9fxx08x0c->page_size, data);
 }
@@ -360,8 +366,7 @@ bool k9fxx08x0c_read_page_part(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_
 	if (k9fxx08x0c_is_block_bad(k9fxx08x0c, block))
 		return FALSE;
 
-	uint32_t address = (uint32_t)block * k9fxx08x0c->pages_per_block * k9fxx08x0c->page_full_size +
-	                   (uint32_t)page * k9fxx08x0c->page_full_size + offset;
+	uint32_t address = k9fxx08x0c_address(k9fxx08x0c, block, page, offset);
 
 	k9fxx08x0c_busy_wait();
 	k9fxx08x0c_set_chip_enable();
@@ -388,7 +393,7 @@ bool k9fxx08x0c_erase_block(k9fxx08x0c_t *k9fxx08x0c, uint16_t block) {
 	if (k9fxx08x0c_is_write_protected(k9fxx08x0c) || k9fxx08x0c_is_block_bad(k9fxx08x0c, block))
 		return FALSE;
 
-	uint32_t address = (uint32_t)block * k9fxx08x0c->pages_per_block * k9fxx08x0c->page_full_size;
+	uint32_t address = k9fxx08x0c_address(k9fxx08x0c, block, 0, 0);
 
 	k9fxx08x0c_busy_wait();
 	k9fxx08x0c_set_chip_enable();
@@ -418,8 +423,7 @@ static bool k9fxx08x0c_write_page_part(k9fxx08x0c_t *k9fxx08x0c, uint16_t block,
 	if (k9fxx08x0c_is_write_protected(k9fxx08x0c) || k9fxx08x0c_is_block_bad(k9fxx08x0c, block))
 		return FALSE;
 
-	uint32_t address = (uint32_t)block * k9fxx08x0c->pages_per_block * k9fxx08x0c->page_full_size +
-	                   (uint32_t)page * k9fxx08x0c->page_full_size + offset;
+	uint32_t address = k9fxx08x0c_address(k9fxx08x0c, block, page, offset);
 
 	k9fxx08x0c_busy_wait();
 	k9fxx08x0c_set_chip_enable();
@@ -455,8 +459,7 @@ bool k9fxx08x0c_verify_page_part(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint1
 	if (k9fxx08x0c_is_block_bad(k9fxx08x0c, block))
 		return FALSE;
 
-	uint32_t address = (uint32_t)block * k9fxx08x0c->pages_per_block * k9fxx08x0c->page_full_size +
-	                   (uint32_t)page * k9fxx08x0c->page_full_size + offset;
+	uint32_t address = k9fxx08x0c_address(k9fxx08x0c, block, page, offset);
 
 	k9fxx08x0c_busy_wait();
 	k9fxx08x0c_set_chip_enable();
