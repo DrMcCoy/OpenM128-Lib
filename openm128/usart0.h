@@ -63,6 +63,6 @@ void usart0_enable_echo(void);
 void usart0_disable_echo(void);
 
 /** Dump data in a nice-looking hexadecimal format onto the USART0. */
-void usart0_dump_hex(const uint8_t *data, uint16_t size);
+void usart0_dump_hex(const uint8_t *data, uint16_t size, uint32_t address);
 
 #endif /* USART_H_*/

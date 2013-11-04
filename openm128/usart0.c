@@ -109,18 +109,16 @@ void usart0_disable_echo(void) {
 	usart0_echo_enabled = 0;
 }
 
-void usart0_dump_hex(const uint8_t *data, uint16_t size) {
+void usart0_dump_hex(const uint8_t *data, uint16_t size, uint32_t address) {
 	if (size == 0)
 		return;
-
-	uint16_t offset = 0;
 
 	while (size > 0) {
 		// At max 16 bytes printed per row
 		uint16_t n = MIN(size, 16);
 
-		// Print an offset
-		printf("%04X  ", offset);
+		// Print an address
+		printf("%04X%04X  ", (unsigned int)(address >> 16), (unsigned int)(address & 0xFFFF));
 
 		// 2 "blobs" of each 8 bytes per row
 		for (uint8_t i = 0; i < 2; i++) {
@@ -148,7 +146,7 @@ void usart0_dump_hex(const uint8_t *data, uint16_t size) {
 		printf("|\n");
 
 		size   -= n;
-		offset += n;
+		address += n;
 		data   += n;
 	}
 }
