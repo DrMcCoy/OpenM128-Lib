@@ -173,4 +173,7 @@ bool k9fxx08x0c_verify_page(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t p
 bool k9fxx08x0c_verify_page_part(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page,
                                  uint16_t offset, uint16_t n, uint8_t *data, bool critical);
 
+/** Return an unique address for this memory location on the flash device. */
+uint32_t k9fxx08x0c_address(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint16_t offset);
+
 #endif /* K9FXX08X0C_H_ */

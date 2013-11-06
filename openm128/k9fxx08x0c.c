@@ -108,17 +108,24 @@ static void k9fxx08x0c_clear_write() {
 
 // -- Getting/Setting data --
 
-static void k9fxx08x0c_set_data(uint8_t data) {
-	DDRA  = 0xFF;
-	PORTA = data;
-}
-
-static uint8_t k9fxx08x0c_get_data() {
+static void k9fxx08x0c_make_input() {
 	DDRA  = 0x00;
 	PORTA = 0xFF;
 
 	_delay_us(1);
+}
 
+static void k9fxx08x0c_make_output() {
+	DDRA  = 0xFF;
+}
+
+static void k9fxx08x0c_set_data(uint8_t data) {
+	k9fxx08x0c_make_output();
+	PORTA = data;
+}
+
+static uint8_t k9fxx08x0c_get_data() {
+	k9fxx08x0c_make_input();
 	return PINA;
 }
 
@@ -191,7 +198,7 @@ static void k9fxx08x0c_send_address_row(uint32_t address) {
 static void k9fxx08x0c_send_address_full(uint32_t address) {
 	k9fxx08x0c_set_address();
 	k9fxx08x0c_send_byte (address & 0x000000FFUL);
-	k9fxx08x0c_send_byte((address & 0x00000F00UL) >> 8);
+	k9fxx08x0c_send_byte((address & 0x00000F00UL) >> 8 );
 	k9fxx08x0c_send_byte((address & 0x000FF000UL) >> 12);
 	k9fxx08x0c_send_byte((address & 0x0FF00000UL) >> 20);
 	k9fxx08x0c_clear_address();
@@ -347,10 +354,8 @@ bool k9fxx08x0c_is_write_protected(k9fxx08x0c_t *k9fxx08x0c) {
 	return !(k9fxx08x0c_read_status() & 0x80);
 }
 
-static uint32_t k9fxx08x0c_address(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint16_t offset) {
-	return (uint32_t)block * k9fxx08x0c->page_full_size * k9fxx08x0c->pages_per_block +
-	       (uint32_t)page  * k9fxx08x0c->page_full_size +
-	       (uint32_t)offset;
+uint32_t k9fxx08x0c_address(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint16_t offset) {
+	return (((uint32_t)block * k9fxx08x0c->pages_per_block + (uint32_t)page) << 12) + (offset & 0x0FFF);
 }
 
 bool k9fxx08x0c_read_page(k9fxx08x0c_t *k9fxx08x0c, uint16_t block, uint16_t page, uint8_t *data) {
