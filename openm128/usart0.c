@@ -29,7 +29,7 @@
 #include "openm128/usart0.h"
 #include "openm128/util.h"
 
-static uint8_t usart0_echo_enabled = 0;
+static bool usart0_echo_enabled = FALSE;
 
 void usart0_put(unsigned char c) {
 	while(!(UCSR0A & 0x20));
@@ -131,12 +131,8 @@ void usart0_init(void) {
 	stdin  = &uart0_stdout_stdin;
 }
 
-void usart0_enable_echo(void) {
-	usart0_echo_enabled = 1;
-}
-
-void usart0_disable_echo(void) {
-	usart0_echo_enabled = 0;
+void usart0_echo(bool enabled) {
+	usart0_echo_enabled = enabled;
 }
 
 void usart0_dump_hex(const uint8_t *data, uint16_t size, uint32_t address) {

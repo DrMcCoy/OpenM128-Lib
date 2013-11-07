@@ -56,11 +56,8 @@ int usart0_get(void);
  */
 int usart0_get_wait(void);
 
-/** Enable echo mode: All read characters will be send back through the USART0. */
-void usart0_enable_echo(void);
-
-/** Disable echo mode (default). */
-void usart0_disable_echo(void);
+/** Enable/Disable echo mode: If enabled, all read characters will be send back through the USART0. */
+void usart0_echo(bool enabled);
 
 /** Read a raw block of data from the USART0.
  *
