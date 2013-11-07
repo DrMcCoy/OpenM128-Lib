@@ -24,6 +24,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file k9fxx08x0c.h
+ *  This code is *not* ready for serious production use. At the very least,
+ *  some form of error detection / correct scheme needs to be implemented.
+ */
+
 #ifndef K9FXX08X0C_H_
 #define K9FXX08X0C_H_
 
