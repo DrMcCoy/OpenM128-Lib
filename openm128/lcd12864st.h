@@ -31,6 +31,10 @@
  *
  *  For details on that character encoding, see <https://en.wikipedia.org/wiki/GB_2312> and
  *  <http://www.khngai.com/chinese/charmap/tblgb.php>.
+ *
+ *  Please also note that display does not like other devices being on the same SPI bus.
+ *  Specifically, the LCD controller resets itself when CS is activated and it doesn't
+ *  like the clock or data line being toggled while CS is inactive.
  */
 
 #ifndef LCD12864ST_H_
