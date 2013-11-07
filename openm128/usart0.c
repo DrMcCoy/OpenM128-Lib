@@ -55,6 +55,36 @@ int usart0_get(void) {
 	return data;
 }
 
+uint16_t usart0_read(uint8_t *data, uint16_t n) {
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		while (!(UCSR0A & 0x80));
+
+		uint8_t status = UCSR0A;
+		*data++        = UDR0;
+
+		if (status & 0x1C)
+			break;
+
+		processed++;
+	}
+
+	return processed;
+}
+
+uint16_t usart0_write(uint8_t *data, uint16_t n) {
+	uint16_t processed = 0;
+	while (n-- > 0) {
+		while(!(UCSR0A & 0x20));
+
+		UDR0 = *data++;
+
+		processed++;
+	}
+
+	return processed;
+}
+
 int usart0_get_wait(void) {
 	int c;
 	while ((c = usart0_get()) == _FDEV_EOF);

@@ -62,6 +62,24 @@ void usart0_enable_echo(void);
 /** Disable echo mode (default). */
 void usart0_disable_echo(void);
 
+/** Read a raw block of data from the USART0.
+ *
+ *  @param data The read data will be stored here.
+ *  @param n    How many bytes to read.
+ *
+ *  @return The number of bytes read.
+ */
+uint16_t usart0_read(uint8_t *data, uint16_t n);
+
+/** Write a raw block of data to the USART0.
+ *
+ *  @param data The data to write.
+ *  @param n    How many bytes to write.
+ *
+ *  @return The number of bytes written.
+ */
+uint16_t usart0_write(uint8_t *data, uint16_t n);
+
 /** Dump data in a nice-looking hexadecimal format onto the USART0. */
 void usart0_dump_hex(const uint8_t *data, uint16_t size, uint32_t address);
 
