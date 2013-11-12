@@ -250,6 +250,11 @@ void vs1003b_set_volume(uint8_t left, uint8_t right) {
 	vs1003b_command_volume(((uint16_t)left << 8) | right);
 }
 
+void vs1003b_get_volume(uint8_t *left, uint8_t *right) {
+	*left  = 254 - ((vs1003b_current_volume & 0xFF00) >> 8);
+	*right = 254 -  (vs1003b_current_volume & 0x00FF);
+}
+
 uint16_t vs1003b_get_decode_time(void) {
 	return vs1003b_command_read(COMMAND_DECODETIME);
 }

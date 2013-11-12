@@ -62,6 +62,9 @@ void vs1003b_stop(void);
 /** Set the volume for the left and right output channel. */
 void vs1003b_set_volume(uint8_t left, uint8_t right);
 
+/** Return the current volume. */
+void vs1003b_get_volume(uint8_t *left, uint8_t *right);
+
 /** Return the number of seconds the current data has been decoded. */
 uint16_t vs1003b_get_decode_time(void);
 
