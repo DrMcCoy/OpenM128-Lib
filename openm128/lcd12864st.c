@@ -109,7 +109,7 @@ void lcd12864st_print(uint8_t x, uint8_t y, const char *str) {
 
 	char *data = lcd12864st_buffer + y * LCD12864ST_COLUMNS + x;
 
-	memcpy(data, str, MIN(LCD12864ST_COLUMNS - x, strlen(str)));
+	memcpy(data, str, MIN((size_t) LCD12864ST_COLUMNS - x, strlen(str)));
 }
 
 void lcd12864st_print_P(uint8_t x, uint8_t y, const char *str) {
@@ -118,7 +118,7 @@ void lcd12864st_print_P(uint8_t x, uint8_t y, const char *str) {
 
 	char *data = lcd12864st_buffer + y * LCD12864ST_COLUMNS + x;
 
-	memcpy_P(data, str, MIN(LCD12864ST_COLUMNS - x, strlen_P(str)));
+	memcpy_P(data, str, MIN((size_t) LCD12864ST_COLUMNS - x, strlen_P(str)));
 }
 
 void lcd12864st_print_centered(uint8_t line, const char *str) {
