@@ -58,7 +58,7 @@ uint32_t sqrt_integer_rounded(uint32_t a_nInput) {
 }
 
 void pad_string(char *str, unsigned int length, char c) {
-	for (int i = strlen(str); i < length; i++)
+	for (size_t i = strlen(str); i < length; i++)
 		str[i] = c;
 
 	str[length] = '\0';
