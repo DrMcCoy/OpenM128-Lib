@@ -76,7 +76,7 @@ bool pcf8591_get_all(uint8_t device_id, pcf8591_input_mode_t mode, uint8_t *data
 
 	// Read one value more than channels. The first one is the result from the previous conversion, the latter what we want
 	uint8_t values[5];
-	if (i2c_read(PCF8591_SLAVE_ADDRESS(device_id), pcf8591_channel_max[mode] + 1, values) != (pcf8591_channel_max[mode] + 1))
+	if (i2c_read(PCF8591_SLAVE_ADDRESS(device_id), pcf8591_channel_max[mode] + 1, values) != (uint16_t)(pcf8591_channel_max[mode] + 1))
 		return FALSE;
 
 	memcpy(data, values + 1, pcf8591_channel_max[mode]);
