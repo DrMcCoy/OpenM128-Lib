@@ -234,7 +234,7 @@ void pcf8563_time_from_unix(pcf8563_time_t *time, uint32_t unix) {
 
 	time->day = day;
 
-	day += (day > 58 + leap) ? ((leap) ? 1 : 2) : 0;
+	day += (day > (uint32_t)(58 + leap)) ? ((leap) ? 1 : 2) : 0;
 
 	time->month = ((day * 12) + 6) / 367;
 	time->day = day + 1 - ((time->month * 367) + 5) / 12;
