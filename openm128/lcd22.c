@@ -590,10 +590,10 @@ static void lcd22_draw_bitmap_paletted(const uint8_t *bitmap, const uint16_t *pa
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (uint16_t j = top; j <= bottom; j++) {
+	for (int16_t j = top; j <= bottom; j++) {
 		uint8_t bitPos = 255, p = 0x00;
 
-		for (uint16_t i = left; i <= right; i++) {
+		for (int16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
@@ -619,10 +619,10 @@ static void lcd22_draw_bitmap_paletted_P(const uint8_t *bitmap, const uint16_t *
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (uint16_t j = top; j <= bottom; j++) {
+	for (int16_t j = top; j <= bottom; j++) {
 		uint8_t bitPos = 255, p = 0x00;
 
-		for (uint16_t i = left; i <= right; i++) {
+		for (int16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
@@ -648,10 +648,10 @@ static void lcd22_draw_bitmap_paletted_PP(const uint8_t *bitmap, const uint16_t 
 	lcd22_prepare_write();
 
 	// Go through each row of the bitmap data, always starting with a new byte
-	for (uint16_t j = top; j <= bottom; j++) {
+	for (int16_t j = top; j <= bottom; j++) {
 		uint8_t bitPos = 255, p = 0x00;
 
-		for (uint16_t i = left; i <= right; i++) {
+		for (int16_t i = left; i <= right; i++) {
 			// Fetch a new byte if necessary
 			if (bitPos++ >= ((8 / bits) - 1)) {
 				bitPos = 0;
