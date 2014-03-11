@@ -24,6 +24,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// Disable the "unused parameter" warning triggered by k9fxx08x0c_is_write_protected() and k9fxx08x0c_is_block_bad()
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
 #include <string.h>
 #include <avr/io.h>
 #include <util/delay.h>
