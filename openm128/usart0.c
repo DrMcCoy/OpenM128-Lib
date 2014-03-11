@@ -24,6 +24,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+// Disable the "unused parameter" warning triggered by usart0_getchar()
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
 #include <avr/io.h>
 
 #include "openm128/usart0.h"
