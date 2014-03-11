@@ -93,15 +93,15 @@ int usart0_get_wait(void) {
 }
 
 
-static int uart0_putchar(char c, FILE *stream) {
+static int usart0_putchar(char c, FILE *stream) {
 	if (c == '\n')
-		uart0_putchar('\r', stream);
+		usart0_putchar('\r', stream);
 
 	usart0_put(c);
 	return 0;
 }
 
-static int uart0_getchar(FILE *stream) {
+static int usart0_getchar(FILE *stream) {
 	int data = _FDEV_EOF;
 	while (data == _FDEV_EOF)
 		data = usart0_get();
@@ -112,7 +112,7 @@ static int uart0_getchar(FILE *stream) {
 	return data;
 }
 
-static FILE uart0_stdout_stdin = FDEV_SETUP_STREAM(uart0_putchar, uart0_getchar, _FDEV_SETUP_RW);
+static FILE usart0_stdout_stdin = FDEV_SETUP_STREAM(usart0_putchar, usart0_getchar, _FDEV_SETUP_RW);
 
 void usart0_init(void) {
 	// USART0 initialization
@@ -135,8 +135,8 @@ void usart0_init(void) {
 		UCSR0A &= ~(1 << U2X0);
 	#endif
 
-	stdout = &uart0_stdout_stdin;
-	stdin  = &uart0_stdout_stdin;
+	stdout = &usart0_stdout_stdin;
+	stdin  = &usart0_stdout_stdin;
 }
 
 void usart0_echo(bool enabled) {
